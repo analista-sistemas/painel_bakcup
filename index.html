@@ -1,46 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Totem de Senhas</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; padding: 50px; }
-    button { font-size: 24px; padding: 10px 20px; }
-    #senha { margin-top: 30px; font-size: 48px; font-weight: bold; }
-  </style>
-</head>
-<body>
-  <h1>Totem de Senhas</h1>
-  <button id="btn">Gerar Senha</button>
-  <div id="senha">–––</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Totem de Senhas</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding: 50px;
+      }
+      button {
+        font-size: 24px;
+        padding: 10px 20px;
+      }
+      #senha {
+        margin-top: 30px;
+        font-size: 48px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Totem de Senhas</h1>
+    <button id="btn">Gerar Senha</button>
+    <div id="senha">–––</div>
 
-  <script>
-    const URL = "https://script.google.com/macros/s/AKfycbxkyCTpHCcOYHc-rH5yqek9zXJy23_uVNYHkmkaM6OEi9ZJCAZBovE7kxLOobXd4u4ExA/exec";
+    <script>
+      const URL =
+        "https://script.google.com/macros/s/AKfycbxkyCTpHCcOYHc-rH5yqek9zXJy23_uVNYHkmkaM6OEi9ZJCAZBovE7kxLOobXd4u4ExA/exec";
 
-    // Quando a impressão terminar, volta ao estado inicial
-    window.onafterprint = () => {
-      document.getElementById("senha").innerText = "–––";
-    };
+      // Quando a impressão terminar, volta ao estado inicial
+      window.onafterprint = () => {
+        document.getElementById("senha").innerText = "–––";
+      };
 
-    document.getElementById("btn").onclick = () => {
-      const btn = document.getElementById("btn");
-      btn.disabled = true;
+      document.getElementById("btn").onclick = () => {
+        const btn = document.getElementById("btn");
+        btn.disabled = true;
 
-      fetch(URL)
-        .then(r => r.text())
-        .then(text => {
-          const code = text.replace('Sua senha é: ', '');
-          document.getElementById("senha").innerText = code;
-          window.print();
-        })
-        .catch(err => {
-          console.error(err);
-          alert("Erro ao gerar senha");
-        })
-        .finally(() => {
-          setTimeout(() => btn.disabled = false, 1000);
-        });
-    };
-  </script>
-</body>
+        fetch(URL)
+          .then((r) => r.text())
+          .then((text) => {
+            const code = text.replace("Sua senha é: ", "");
+            document.getElementById("senha").innerText = code;
+            window.print();
+          })
+          .catch((err) => {
+            console.error(err);
+            alert("Erro ao gerar senha");
+          })
+          .finally(() => {
+            setTimeout(() => (btn.disabled = false), 1000);
+          });
+      };
+
+      // TESTANDO GITHUB
+    </script>
+  </body>
 </html>
