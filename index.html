@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Totem de Senhas</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 50px; }
+    button { font-size: 24px; padding: 10px 20px; }
+    #senha { margin-top: 30px; font-size: 48px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Totem de Senhas</h1>
+  <button id="btn">Gerar Senha</button>
+  <div id="senha">–––</div>
+
+  <script>
+    const URL = "https://script.google.com/macros/s/AKfycbwB-dDXuxA__HZ5Tu8rIE1BzdhKlZmnyKsJolEgB5FyPhWjNZ3iJJ1pnAxo9a8k5Fs6RQ/exec";
+    document.getElementById("btn").onclick = () => {
+      fetch(URL)
+        .then(r => r.text())
+        .then(text => {
+          document.getElementById("senha").innerText = text.replace('Sua senha é: ', '');
+          window.print();
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Erro ao gerar senha");
+        });
+    };
+  </script>
+</body>
+</html>
