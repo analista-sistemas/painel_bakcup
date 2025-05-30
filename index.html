@@ -16,16 +16,29 @@
 
   <script>
     const URL = "https://script.google.com/macros/s/AKfycbwB-dDXuxA__HZ5Tu8rIE1BzdhKlZmnyKsJolEgB5FyPhWjNZ3iJJ1pnAxo9a8k5Fs6RQ/exec";
+
+    // Quando a impressão terminar, volta ao estado inicial
+    window.onafterprint = () => {
+      document.getElementById("senha").innerText = "–––";
+    };
+
     document.getElementById("btn").onclick = () => {
+      const btn = document.getElementById("btn");
+      btn.disabled = true;
+
       fetch(URL)
         .then(r => r.text())
         .then(text => {
-          document.getElementById("senha").innerText = text.replace('Sua senha é: ', '');
+          const code = text.replace('Sua senha é: ', '');
+          document.getElementById("senha").innerText = code;
           window.print();
         })
         .catch(err => {
           console.error(err);
           alert("Erro ao gerar senha");
+        })
+        .finally(() => {
+          setTimeout(() => btn.disabled = false, 1000);
         });
     };
   </script>
