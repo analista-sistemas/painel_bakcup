@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Painel de Classificação de Risco</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f9f9f9;
+      }
+      h1 {
+        color: #333;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+      }
+      button {
+        padding: 6px 12px;
+        cursor: pointer;
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Painel de Classificação de Risco</h1>
+    <table id="senhaTable">
+      <thead>
+        <tr>
+          <th>Senha</th>
+          <th>Data/Hora</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linhas vão aqui -->
+      </tbody>
+    </table>
+
+    <script>
+      const WEB_APP_URL =
+        "https://script.google.com/macros/s/AKfycby0yWcGakXl4R3RjlgVK5_VLAJ5hjFV0lKpxvtsY4lett0cLcQO57BZC_TIDm5nl7IdLQ/exec";
+
+      let senhas = [];
+      const tbody = document.querySelector("#senhaTable tbody");
+      const POLLING_INTERVAL = 5000; // Atualiza a cada 5 segundos
+
+      function render() {
+        tbody.innerHTML = "";
+        senhas.forEach(({ senha, data, status }) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${senha}</td>
+            <td>${data}</td>
+            <td>${status}</td>
+            <td>
+              <button onclick="chamarSenha('${senha}')">Chamar</button>
+              <button onclick="excluirSenha('${senha}')">Excluir</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      async function carregarSenhas(maquina) {
+        try {
+          const resp = await fetch(
+            `${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(
+              maquina
+            )}`
+          );
+          senhas = await resp.json();
+          render();
+        } catch (err) {
+          alert("Erro ao carregar senhas: " + err.message);
+        }
+      }
+
+      async function chamarSenha(senha) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const maquina = urlParams.get("maquina") || "Classificacao1";
+
+        try {
+          const resp = await fetch(
+            `${WEB_APP_URL}?action=chamar&senha=${senha}&maquina=${encodeURIComponent(
+              maquina
+            )}`
+          );
+          const result = await resp.json();
+          if (result.success) {
+            alert("Senha colocada em triagem!");
+            carregarSenhas(maquina);
+          } else {
+            alert("Erro ao chamar senha: " + result.message);
+          }
+        } catch (err) {
+          alert("Erro na conexão: " + err.message);
+        }
+      }
+
+      async function excluirSenha(senha) {
+        if (!confirm(`Tem certeza que quer excluir a senha ${senha}?`)) return;
+
+        try {
+          const resp = await fetch(
+            `${WEB_APP_URL}?action=excluir&senha=${senha}`
+          );
+          const result = await resp.json();
+          if (result.success) {
+            alert("Senha excluída com sucesso!");
+            const urlParams = new URLSearchParams(window.location.search);
+            const maquina = urlParams.get("maquina") || "Classificacao1";
+            carregarSenhas(maquina);
+          } else {
+            alert("Erro ao excluir senha: " + result.message);
+          }
+        } catch (err) {
+          alert("Erro na conexão: " + err.message);
+        }
+      }
+
+      async function iniciarAtualizacaoAutomatica() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const maquina = urlParams.get("maquina") || "Classificacao1";
+
+        setInterval(() => {
+          carregarSenhas(maquina);
+        }, POLLING_INTERVAL);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const maquina = urlParams.get("maquina") || "Classificacao1";
+        carregarSenhas(maquina); // Carregamento inicial
+        iniciarAtualizacaoAutomatica(); // Atualização contínua
+      });
+    </script>
+  </body>
+</html>
