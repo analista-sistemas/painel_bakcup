@@ -2,59 +2,66 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Painel de Classificação</title>
+    <title>Painel de Classificação de Risco</title>
+    <!-- Link para o CSS externo -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Painel principal com o botão para chamar senha -->
-    <div class="painel">
-      <h1>Painel de Classificação</h1>
-      <!-- Botão que inicia o fluxo de chamar senha -->
-      <button id="btn-chamar" onclick="chamarSenha()">Chamar Senha</button>
-    </div>
+    <!-- Título da página -->
+    <h1>Painel de Classificação de Risco</h1>
 
-    <!-- Modal para preenchimento dos dados do paciente -->
-    <div id="modal-paciente" class="modal" style="display: none">
-      <div class="modal-content">
+    <!-- Tabela para listar as senhas aguardando -->
+    <table id="senhaTable">
+      <thead>
+        <tr>
+          <th>Senha</th>
+          <th>Data/Hora</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- As linhas da tabela são geradas dinamicamente pelo JavaScript -->
+      </tbody>
+    </table>
+
+    <!-- Modal para preencher informações do paciente -->
+    <div id="modal">
+      <div id="modal-content">
         <h2>Preencher Dados do Paciente</h2>
-        <form id="form-paciente">
-          <!-- Campo para inserir o nome do paciente -->
-          <label for="nome">Nome:</label>
-          <input type="text" id="nome" name="nome" required />
-
-          <!-- Campo para inserir a idade -->
-          <label for="idade">Idade:</label>
-          <input type="number" id="idade" name="idade" required />
-
-          <!-- Campo para inserir a especialidade -->
-          <label for="especialidade">Especialidade:</label>
-          <input type="text" id="especialidade" name="especialidade" required />
-
-          <!-- Campo para selecionar a cor de classificação -->
-          <label for="cor">Cor da Classificação:</label>
-          <input type="text" id="cor" name="cor" />
-
-          <!-- Campo para adicionar observações -->
-          <label for="observacao">Observação:</label>
-          <textarea id="observacao" name="observacao"></textarea>
-
-          <!-- Botões de ação no modal -->
-          <div class="actions">
-            <!-- Salva os dados do paciente -->
-            <button type="button" onclick="salvarDados()">Salvar</button>
-            <!-- Finaliza a classificação -->
-            <button type="button" onclick="finalizarClassificacao()">
-              Finalizar
-            </button>
-            <!-- Fecha o modal sem salvar -->
-            <button type="button" onclick="fecharModal()">Fechar</button>
+        <form id="form">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" required />
           </div>
+          <div class="form-group">
+            <label for="idade">Idade</label>
+            <input type="number" id="idade" required />
+          </div>
+          <div class="form-group">
+            <label for="especialidade">Especialidade</label>
+            <input type="text" id="especialidade" required />
+          </div>
+          <div class="form-group">
+            <label for="cor">Cor</label>
+            <select id="cor" required>
+              <option value="Vermelho">Vermelho</option>
+              <option value="Amarelo">Amarelo</option>
+              <option value="Verde">Verde</option>
+              <option value="Azul">Azul</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="observacao">Observação</label>
+            <input type="text" id="observacao" />
+          </div>
+          <button type="button" id="salvarBtn">Salvar</button>
+          <button type="button" id="cancelarBtn">Cancelar</button>
         </form>
       </div>
     </div>
 
-    <!-- Inclusão do script JavaScript -->
-    <script src="script.js"></script>
+    <!-- Link para o JavaScript externo (defer garante que o HTML carregue antes do script) -->
+    <script src="script.js" defer></script>
   </body>
 </html>
