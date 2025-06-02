@@ -2,66 +2,72 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <title>Painel de Classificação de Risco</title>
-    <!-- Link para o CSS externo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Painel de Chamadas - Preencher Dados do Paciente</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Título da página -->
-    <h1>Painel de Classificação de Risco</h1>
+    <main class="container">
+      <h1>Painel de Chamadas</h1>
 
-    <!-- Tabela para listar as senhas aguardando -->
-    <table id="senhaTable">
-      <thead>
-        <tr>
-          <th>Senha</th>
-          <th>Data/Hora</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- As linhas da tabela são geradas dinamicamente pelo JavaScript -->
-      </tbody>
-    </table>
-
-    <!-- Modal para preencher informações do paciente -->
-    <div id="modal">
-      <div id="modal-content">
-        <h2>Preencher Dados do Paciente</h2>
-        <form id="form">
-          <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" required />
-          </div>
-          <div class="form-group">
-            <label for="idade">Idade</label>
-            <input type="number" id="idade" required />
-          </div>
-          <div class="form-group">
-            <label for="especialidade">Especialidade</label>
-            <input type="text" id="especialidade" required />
-          </div>
-          <div class="form-group">
-            <label for="cor">Cor</label>
-            <select id="cor" required>
-              <option value="Vermelho">Vermelho</option>
-              <option value="Amarelo">Amarelo</option>
-              <option value="Verde">Verde</option>
-              <option value="Azul">Azul</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="observacao">Observação</label>
-            <input type="text" id="observacao" />
-          </div>
-          <button type="button" id="salvarBtn">Salvar</button>
-          <button type="button" id="cancelarBtn">Cancelar</button>
-        </form>
+      <div id="senha-lista" class="senha-lista">
+        <!-- Lista de senhas aguardando classificação vai aqui -->
       </div>
-    </div>
 
-    <!-- Link para o JavaScript externo (defer garante que o HTML carregue antes do script) -->
-    <script src="script.js" defer></script>
+      <!-- Modal de preenchimento -->
+      <div id="modal" class="modal hidden">
+        <div class="modal-content">
+          <h2>Preencher Dados do Paciente</h2>
+          <form id="form-paciente">
+            <label>
+              Nome:
+              <input type="text" name="nome" required autocomplete="off" />
+            </label>
+
+            <label>
+              Idade:
+              <input
+                type="number"
+                name="idade"
+                min="0"
+                required
+                autocomplete="off"
+              />
+            </label>
+
+            <label>
+              Especialidade:
+              <input
+                type="text"
+                name="especialidade"
+                required
+                autocomplete="off"
+              />
+            </label>
+
+            <label>
+              Cor da Classificação:
+              <input type="color" name="cor" value="#ff0000" />
+            </label>
+
+            <label>
+              Observação:
+              <textarea
+                name="observacao"
+                rows="3"
+                autocomplete="off"
+              ></textarea>
+            </label>
+
+            <div class="modal-buttons">
+              <button type="submit">Salvar</button>
+              <button type="button" id="btn-cancelar">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
   </body>
 </html>

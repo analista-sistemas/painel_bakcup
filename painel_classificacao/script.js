@@ -1,174 +1,115 @@
-/* URL do Web App do Apps Script (já fornecida por você) */
-const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbwHrqU6YNofcHZDtNWcuhNM5ujnkiIbiGM33Wcgv30sUgC8YISGhSlZE4nNg8iV_Qa3sg/exec";
+// URL do seu deploy do Apps Script
+const API_BASE_URL =
+  "https://script.google.com/macros/s/AKfycbzUX_OyTervwoAr41BfOQZgynKFXRjSmV96UjsZVmqKNsqI58jiUdlxOmeFbgIKwshSjw/exec";
 
-let senhas = []; // Armazena as senhas carregadas
-let senhaSelecionada = ""; // Armazena a senha selecionada no modal
-
-const tbody = document.querySelector("#senhaTable tbody"); // Corpo da tabela
-const POLLING_INTERVAL = 5000; // Intervalo de atualização automática
-
-// Elementos do modal
+// Variáveis DOM
+const senhaLista = document.getElementById("senha-lista");
 const modal = document.getElementById("modal");
-const nomeInput = document.getElementById("nome");
-const idadeInput = document.getElementById("idade");
-const especialidadeInput = document.getElementById("especialidade");
-const corInput = document.getElementById("cor");
-const observacaoInput = document.getElementById("observacao");
-const salvarBtn = document.getElementById("salvarBtn");
-const cancelarBtn = document.getElementById("cancelarBtn");
+const formPaciente = document.getElementById("form-paciente");
+const btnCancelar = document.getElementById("btn-cancelar");
 
-/**
- * Renderiza as linhas da tabela com os dados das senhas
- */
-function render() {
-  tbody.innerHTML = ""; // Limpa a tabela antes de renderizar
-  senhas.forEach(({ senha, data, status }) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${senha}</td>
-      <td>${new Date(data).toLocaleString()}</td>
-      <td>${status}</td>
-      <td>
-        <button onclick="abrirModal('${senha}')">Chamar</button>
-        <button onclick="excluirSenha('${senha}')">Excluir</button>
-      </td>
+let senhas = []; // lista de senhas carregadas
+let senhaAtual = null; // senha que está sendo chamada/preenchida
+
+// Função para buscar senhas "Aguardando classificação"
+async function carregarSenhas() {
+  try {
+    const res = await fetch(`${API_BASE_URL}?action=listar&maquina=`);
+    const data = await res.json();
+    senhas = data;
+    renderizarSenhas();
+  } catch (error) {
+    alert("Erro ao carregar senhas: " + error.message);
+  }
+}
+
+// Renderiza a lista de senhas no painel
+function renderizarSenhas() {
+  senhaLista.innerHTML = "";
+
+  if (senhas.length === 0) {
+    senhaLista.innerHTML = "<p>Nenhuma senha aguardando classificação.</p>";
+    return;
+  }
+
+  senhas.forEach((item) => {
+    const div = document.createElement("div");
+    div.className = "senha-item";
+    div.innerHTML = `
+      <span><strong>Senha:</strong> ${item.senha}</span>
+      <button data-senha="${item.senha}">Chamar</button>
     `;
-    tbody.appendChild(tr);
+
+    div
+      .querySelector("button")
+      .addEventListener("click", () => abrirModal(item.senha));
+    senhaLista.appendChild(div);
   });
 }
 
-/**
- * Carrega as senhas via Apps Script (listagem)
- */
-async function carregarSenhas(maquina) {
-  try {
-    const resp = await fetch(
-      `${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(maquina)}`
-    );
-    senhas = await resp.json();
-    render();
-  } catch (err) {
-    alert("Erro ao carregar senhas: " + err.message);
-  }
-}
-
-/**
- * Função para abrir o modal e limpar campos
- */
+// Abre o modal para preencher dados do paciente
 function abrirModal(senha) {
-  senhaSelecionada = senha;
+  senhaAtual = senha;
   limparFormulario();
-  modal.classList.add("show");
+  modal.classList.remove("hidden");
 }
 
-/**
- * Fecha o modal (sem enviar dados) e limpa o formulário
- */
-function cancelarModal() {
-  modal.classList.remove("show");
-  limparFormulario();
-}
-
-/**
- * Limpa todos os campos do formulário dentro do modal
- */
+// Limpa todos os campos do formulário
 function limparFormulario() {
-  nomeInput.value = "";
-  idadeInput.value = "";
-  especialidadeInput.value = "";
-  corInput.value = "";
-  observacaoInput.value = "";
+  formPaciente.reset();
 }
 
-/**
- * Salva os dados do paciente e faz a chamada (action=chamar)
- * Depois fecha o modal e recarrega a lista
- */
-async function salvarDados() {
-  const nome = nomeInput.value.trim();
-  const idade = idadeInput.value.trim();
-  const especialidade = especialidadeInput.value.trim();
-  const cor = corInput.value;
-  const observacao = observacaoInput.value.trim();
+// Fecha o modal
+function fecharModal() {
+  modal.classList.add("hidden");
+  senhaAtual = null;
+}
 
-  // Pega a "máquina" da URL (se existir), senão usa "Classificacao1"
-  const urlParams = new URLSearchParams(window.location.search);
-  const maquina = urlParams.get("maquina") || "Classificacao1";
+// Função para salvar dados do paciente e atualizar a senha no Apps Script
+async function salvarDados(event) {
+  event.preventDefault();
+
+  const formData = new FormData(formPaciente);
+  const nome = formData.get("nome").trim();
+  const idade = formData.get("idade").trim();
+  const especialidade = formData.get("especialidade").trim();
+  const cor = formData.get("cor").trim();
+  const observacao = formData.get("observacao").trim();
+
+  if (!nome || !idade || !especialidade) {
+    alert("Por favor, preencha todos os campos obrigatórios.");
+    return;
+  }
 
   try {
-    const resp = await fetch(
-      `${WEB_APP_URL}?action=chamar&senha=${encodeURIComponent(
-        senhaSelecionada
-      )}&maquina=${encodeURIComponent(maquina)}&nome=${encodeURIComponent(
-        nome
-      )}&idade=${encodeURIComponent(idade)}&especialidade=${encodeURIComponent(
-        especialidade
-      )}&cor=${encodeURIComponent(cor)}&observacao=${encodeURIComponent(
-        observacao
-      )}`
-    );
-    const result = await resp.json();
-    if (result.success) {
-      alert("Dados salvos e senha colocada em triagem!");
-      cancelarModal();
-      carregarSenhas(maquina);
+    const url = new URL(API_BASE_URL);
+    url.searchParams.append("action", "chamar");
+    url.searchParams.append("senha", senhaAtual);
+    url.searchParams.append("maquina", "Maquina1"); // Se quiser, pode deixar dinâmico depois
+    url.searchParams.append("nome", nome);
+    url.searchParams.append("idade", idade);
+    url.searchParams.append("especialidade", especialidade);
+    url.searchParams.append("cor", cor);
+    url.searchParams.append("observacao", observacao);
+
+    const res = await fetch(url.toString());
+    const json = await res.json();
+
+    if (json.success) {
+      alert("Dados salvos com sucesso!");
+      fecharModal();
+      await carregarSenhas(); // Atualiza lista após salvar
     } else {
-      alert("Erro ao salvar dados: " + result.message);
+      alert("Erro ao salvar dados: " + (json.message || "Erro desconhecido"));
     }
-  } catch (err) {
-    alert("Erro na conexão: " + err.message);
+  } catch (error) {
+    alert("Erro ao conectar com o servidor: " + error.message);
   }
 }
 
-/**
- * Exclui uma senha (action=excluir) e recarrega a lista
- */
-async function excluirSenha(senha) {
-  if (!confirm(`Tem certeza que quer excluir a senha ${senha}?`)) return;
+// Event listeners
+formPaciente.addEventListener("submit", salvarDados);
+btnCancelar.addEventListener("click", fecharModal);
 
-  try {
-    const resp = await fetch(`${WEB_APP_URL}?action=excluir&senha=${senha}`);
-    const result = await resp.json();
-    if (result.success) {
-      alert("Senha excluída com sucesso!");
-      const urlParams = new URLSearchParams(window.location.search);
-      const maquina = urlParams.get("maquina") || "Classificacao1";
-      carregarSenhas(maquina);
-    } else {
-      alert("Erro ao excluir senha: " + result.message);
-    }
-  } catch (err) {
-    alert("Erro na conexão: " + err.message);
-  }
-}
-
-/**
- * Inicia a atualização periódica (polling) de senhas
- */
-function iniciarAtualizacaoAutomatica() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const maquina = urlParams.get("maquina") || "Classificacao1";
-
-  // Primeiro carregamento imediato
-  carregarSenhas(maquina);
-
-  // Recarrega a cada POLLING_INTERVAL
-  setInterval(() => {
-    carregarSenhas(maquina);
-  }, POLLING_INTERVAL);
-}
-
-// Liga eventos de botões e inicia polling quando DOM estiver pronto
-document.addEventListener("DOMContentLoaded", () => {
-  // Abre modal ao clicar em "Chamar" (função é chamada por onclick nos botões gerados dinamicamente)
-  window.abrirModal = abrirModal; // Necessário para onclick inline
-  window.excluirSenha = excluirSenha; // Necessário para onclick inline
-
-  // Evento nos botões do modal
-  cancelarBtn.addEventListener("click", cancelarModal);
-  salvarBtn.addEventListener("click", salvarDados);
-
-  // Iniciar atualização automática
-  iniciarAtualizacaoAutomatica();
-});
+// Inicializa o painel carregando as senhas
+carregarSenhas();
