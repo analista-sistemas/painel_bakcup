@@ -3,64 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Painel de Classificação de Risco</title>
-    <style>
-      /* Estilos básicos para o layout da página */
-      body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-        background: #f9f9f9;
-      }
-      h1 {
-        color: #333;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-      th,
-      td {
-        padding: 12px;
-        border: 1px solid #ccc;
-        text-align: left;
-      }
-      button {
-        padding: 6px 12px;
-        cursor: pointer;
-        margin-right: 5px;
-      }
-      /* Estilo para o modal (janela de preenchimento de dados) */
-      #modal {
-        display: none; /* Começa escondido */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
-        justify-content: center;
-        align-items: center;
-      }
-      #modal-content {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        width: 300px;
-      }
-      .form-group {
-        margin-bottom: 15px;
-      }
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-      }
-      .form-group input,
-      .form-group select {
-        width: 100%;
-        padding: 8px;
-        box-sizing: border-box;
-      }
-    </style>
+    <!-- Link para o CSS externo -->
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <!-- Título da página -->
@@ -70,10 +14,10 @@
     <table id="senhaTable">
       <thead>
         <tr>
-          <th>Senha</th> <!-- Coluna para as senhas -->
-          <th>Data/Hora</th> <!-- Coluna para data/hora -->
-          <th>Status</th> <!-- Coluna para o status -->
-          <th>Ações</th> <!-- Coluna para ações (Chamar/Excluir) -->
+          <th>Senha</th>
+          <th>Data/Hora</th>
+          <th>Status</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -85,7 +29,6 @@
     <div id="modal">
       <div id="modal-content">
         <h2>Preencher Dados do Paciente</h2>
-        <!-- Formulário para inserir os dados -->
         <form id="form">
           <div class="form-group">
             <label for="nome">Nome</label>
@@ -102,7 +45,6 @@
           <div class="form-group">
             <label for="cor">Cor</label>
             <select id="cor" required>
-              <!-- Opções de classificação de risco -->
               <option value="Vermelho">Vermelho</option>
               <option value="Amarelo">Amarelo</option>
               <option value="Verde">Verde</option>
@@ -113,148 +55,13 @@
             <label for="observacao">Observação</label>
             <input type="text" id="observacao" />
           </div>
-          <button type="button" id="salvarBtn">Salvar</button> <!-- Botão para salvar -->
-          <button type="button" id="cancelarBtn">Cancelar</button> <!-- Botão para cancelar -->
+          <button type="button" id="salvarBtn">Salvar</button>
+          <button type="button" id="cancelarBtn">Cancelar</button>
         </form>
       </div>
     </div>
 
-    <script>
-      /* URL do App Script configurado */
-      const WEB_APP_URL =
-        "https://script.google.com/macros/s/AKfycbwHrqU6YNofcHZDtNWcuhNM5ujnkiIbiGM33Wcgv30sUgC8YISGhSlZE4nNg8iV_Qa3sg/exec";
-
-      let senhas = []; // Armazena as senhas carregadas
-      let senhaSelecionada = ""; // Armazena a senha selecionada no modal
-      const tbody = document.querySelector("#senhaTable tbody"); // Referência ao corpo da tabela
-      const POLLING_INTERVAL = 5000; // Intervalo de atualização automática
-      const modal = document.getElementById("modal"); // Referência ao modal
-      const nomeInput = document.getElementById("nome"); // Referência ao campo de nome
-      const idadeInput = document.getElementById("idade"); // Referência ao campo de idade
-      const especialidadeInput = document.getElementById("especialidade"); // Referência ao campo de especialidade
-      const corInput = document.getElementById("cor"); // Referência ao campo de cor
-      const observacaoInput = document.getElementById("observacao"); // Referência ao campo de observação
-
-      // Renderiza as linhas da tabela com os dados das senhas
-      function render() {
-        tbody.innerHTML = ""; // Limpa a tabela antes de renderizar
-        senhas.forEach(({ senha, data, status }) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${senha}</td>
-            <td>${data}</td>
-            <td>${status}</td>
-            <td>
-              <!-- Botão para chamar senha -->
-              <button onclick="abrirModal('${senha}')">Chamar</button>
-              <!-- Botão para excluir senha -->
-              <button onclick="excluirSenha('${senha}')">Excluir</button>
-            </td>
-          `;
-          tbody.appendChild(tr); // Adiciona a linha na tabela
-        });
-      }
-
-      // Função para carregar senhas via App Script
-      async function carregarSenhas(maquina) {
-        try {
-          const resp = await fetch(
-            `${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(
-              maquina
-            )}`
-          );
-          senhas = await resp.json();
-          render();
-        } catch (err) {
-          alert("Erro ao carregar senhas: " + err.message);
-        }
-      }
-
-      // Abre o modal para preencher informações
-      function abrirModal(senha) {
-        senhaSelecionada = senha;
-        modal.style.display = "flex"; // Exibe o modal
-      }
-
-      // Fecha o modal ao cancelar
-      document.getElementById("cancelarBtn").onclick = () => {
-        modal.style.display = "none"; // Esconde o modal
-      };
-
-      // Salva os dados do paciente e chama a senha
-      document.getElementById("salvarBtn").onclick = async () => {
-        const nome = nomeInput.value;
-        const idade = idadeInput.value;
-        const especialidade = especialidadeInput.value;
-        const cor = corInput.value;
-        const observacao = observacaoInput.value;
-        const urlParams = new URLSearchParams(window.location.search);
-        const maquina = urlParams.get("maquina") || "Classificacao1";
-
-        try {
-          const resp = await fetch(
-            `${WEB_APP_URL}?action=chamar&senha=${senhaSelecionada}&maquina=${encodeURIComponent(
-              maquina
-            )}&nome=${encodeURIComponent(nome)}&idade=${encodeURIComponent(
-              idade
-            )}&especialidade=${encodeURIComponent(
-              especialidade
-            )}&cor=${encodeURIComponent(cor)}&observacao=${encodeURIComponent(
-              observacao
-            )}`
-          );
-          const result = await resp.json();
-          if (result.success) {
-            alert("Dados salvos e senha colocada em triagem!");
-            modal.style.display = "none"; // Fecha o modal após salvar
-            carregarSenhas(maquina); // Recarrega as senhas atualizadas
-          } else {
-            alert("Erro ao salvar dados: " + result.message);
-          }
-        } catch (err) {
-          alert("Erro na conexão: " + err.message);
-        }
-      };
-
-      // Exclui uma senha
-      async function excluirSenha(senha) {
-        if (!confirm(`Tem certeza que quer excluir a senha ${senha}?`)) return;
-
-        try {
-          const resp = await fetch(
-            `${WEB_APP_URL}?action=excluir&senha=${senha}`
-          );
-          const result = await resp.json();
-          if (result.success) {
-            alert("Senha excluída com sucesso!");
-            const urlParams = new URLSearchParams(window.location.search);
-            const maquina = urlParams.get("maquina") || "Classificacao1";
-            carregarSenhas(maquina);
-          } else {
-            alert("Erro ao excluir senha: " + result.message);
-          }
-        } catch (err) {
-          alert("Erro na conexão: " + err.message);
-        }
-      }
-
-      // Configura a atualização automática das senhas
-      async function iniciarAtualizacaoAutomatica() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const maquina = urlParams.get("maquina") || "Classificacao1";
-
-        setInterval(() => {
-          carregarSenhas(maquina); // Atualiza a lista de senhas periodicamente
-        }, POLLING_INTERVAL);
-      }
-
-      // Executa ao carregar a página
-      document.addEventListener("DOMContentLoaded", () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const maquina = urlParams.get("maquina") || "Classificacao1";
-        carregarSenhas(maquina); // Carrega as senhas da máquina inicial
-        iniciarAtualizacaoAutomatica(); // Inicia a atualização automática
-      });
-    </script>
+    <!-- Link para o JavaScript externo (defer garante que o HTML carregue antes do script) -->
+    <script src="script.js" defer></script>
   </body>
 </html>
