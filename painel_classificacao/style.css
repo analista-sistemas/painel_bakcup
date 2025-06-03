@@ -1,13 +1,8 @@
-/* Reset básico para remover margens e paddings padrões */
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
-
-/* Corpo da página */
 
 body {
     font-family: Arial, sans-serif;
@@ -15,16 +10,10 @@ body {
     background: #f9f9f9;
 }
 
-
-/* Título */
-
 h1 {
     color: #333;
     margin-bottom: 10px;
 }
-
-
-/* Tabela */
 
 table {
     width: 100%;
@@ -40,7 +29,7 @@ td {
 }
 
 
-/* Estilo base para todos os botões */
+/* Botões */
 
 button {
     padding: 6px 12px;
@@ -53,7 +42,7 @@ button {
 }
 
 
-/* Botão: Chamar (azul) */
+/* Chamar */
 
 .btn-primario {
     background-color: #3490dc;
@@ -64,7 +53,7 @@ button {
 }
 
 
-/* Botão: Excluir (vermelho) */
+/* Excluir */
 
 .btn-perigo {
     background-color: #e3342f;
@@ -75,7 +64,7 @@ button {
 }
 
 
-/* Botão: Finalizar Triagem (verde) */
+/* Finalizar Triagem */
 
 .btn-finalizar {
     background-color: #38c172;
@@ -86,7 +75,7 @@ button {
 }
 
 
-/* Modal genérico (fundo escuro) */
+/* Modais */
 
 #modal,
 #modalMaquina {
@@ -102,9 +91,6 @@ button {
     z-index: 1000;
 }
 
-
-/* Mostrar modal com fade */
-
 #modal.show,
 #modalMaquina.show {
     display: flex;
@@ -112,7 +98,7 @@ button {
 }
 
 
-/* Conteúdo interno dos modais */
+/* Conteúdo dos modais */
 
 #modal-content,
 #modalMaquinaContent {
@@ -124,7 +110,7 @@ button {
 }
 
 
-/* Grupos do formulário */
+/* Formulários */
 
 .form-group {
     margin-bottom: 15px;
@@ -148,7 +134,7 @@ button {
 }
 
 
-/* Itens de seleção de máquina */
+/* Radios da máquina */
 
 #formMaquina label {
     display: flex;
@@ -159,7 +145,7 @@ button {
 }
 
 
-/* Botões no formulário de máquina */
+/* Botões no form da máquina */
 
 #formMaquina button {
     margin-right: 10px;
@@ -167,7 +153,7 @@ button {
 }
 
 
-/* Animação fade in */
+/* Animação */
 
 @keyframes fadeIn {
     from {

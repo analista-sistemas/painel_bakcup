@@ -10,15 +10,13 @@
 <body>
     <h1>
         Painel de Classificação de Risco
-        <!-- Botão para configurar a máquina -->
         <button id="btnEngrenagem" title="Configurar Máquina" style="font-size: 1.3rem; margin-left: 15px; cursor: pointer">
       ⚙️
     </button>
-        <!-- Exibe a máquina atual -->
         <span id="spanMaquina" style="font-size: 1rem; margin-left: 10px; color: #555"></span>
     </h1>
 
-    <!-- Tabela de senhas preenchida dinamicamente -->
+    <!-- Tabela com senhas -->
     <table id="senhaTable">
         <thead>
             <tr>
@@ -31,7 +29,7 @@
         <tbody></tbody>
     </table>
 
-    <!-- Modal para preencher dados do paciente -->
+    <!-- Modal para dados do paciente -->
     <div id="modal" class="modal">
         <div id="modal-content">
             <h2>Preencher Dados do Paciente</h2>
@@ -67,7 +65,7 @@
         </div>
     </div>
 
-    <!-- Modal para selecionar máquina -->
+    <!-- Modal de seleção de máquina -->
     <div id="modalMaquina" class="modal">
         <div id="modalMaquinaContent">
             <h2>Selecionar Máquina</h2>
@@ -75,14 +73,13 @@
                 <label><input type="radio" name="classificacao" value="Classificação 01" /> Classificação 01</label>
                 <label><input type="radio" name="classificacao" value="Classificação 02" /> Classificação 02</label>
                 <div style="margin-top: 15px;">
-                    <button type="button" id="salvarBtn" class="btn-finalizar">Salvar</button>
-                    <button type="button" id="cancelarBtn" class="btn-perigo">Cancelar</button>
+                    <button type="button" id="salvarMaquinaBtn" class="btn-primario">Salvar</button>
+                    <button type="button" id="cancelarMaquinaBtn" class="btn-perigo">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Script principal -->
     <script src="script.js" defer></script>
 </body>
 
