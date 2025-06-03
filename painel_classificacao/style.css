@@ -1,118 +1,152 @@
-/* Reset básico: remove margens, paddings e define box-sizing */
+/* Reset básico */
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Estilo do corpo da página */
+
+/* Estilo geral do corpo */
+
 body {
-  font-family: Arial, sans-serif; /* Define a fonte */
-  padding: 20px; /* Espaçamento interno */
-  background: #f9f9f9; /* Cor de fundo */
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f9f9f9;
 }
 
-/* Estilo do título principal */
+
+/* Título principal */
+
 h1 {
-  color: #333; /* Cor do texto */
-  margin-bottom: 10px; /* Espaçamento inferior */
+    color: #333;
+    margin-bottom: 10px;
 }
 
-/* Estilo da tabela */
+
+/* Tabela de senhas */
+
 table {
-  width: 100%; /* Largura total da página */
-  border-collapse: collapse; /* Remove bordas duplas */
-  margin-top: 20px; /* Espaçamento superior */
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 th,
 td {
-  padding: 12px; /* Espaçamento interno das células */
-  border: 1px solid #ccc; /* Borda das células */
-  text-align: left; /* Alinha o texto à esquerda */
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: left;
 }
 
-/* Estilo dos botões */
+
+/* Botões gerais */
+
 button {
-  padding: 6px 12px; /* Espaçamento interno */
-  cursor: pointer; /* Exibe o cursor de clique */
-  margin-right: 5px; /* Espaçamento entre botões */
-  background-color: #3490dc; /* Cor de fundo padrão */
-  border: none; /* Remove a borda padrão */
-  color: white; /* Cor do texto */
-  border-radius: 4px; /* Bordas arredondadas */
-  transition: background-color 0.2s; /* Animação suave para hover */
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-right: 5px;
+    background-color: #3490dc;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.2s;
 }
 
-/* Estilo ao passar o mouse sobre os botões */
 button:hover {
-  background-color: #2779bd;
+    background-color: #2779bd;
 }
 
-/* Estilo específico para o botão cancelar */
+
+/* Botão cancelar do modal do paciente */
+
 button#cancelarBtn {
-  background-color: #6c757d; /* Cinza escuro */
+    background-color: #6c757d;
 }
 
 button#cancelarBtn:hover {
-  background-color: #5a6268; /* Cor mais escura no hover */
+    background-color: #5a6268;
 }
 
-/* Estilo do modal */
-#modal {
-  display: none; /* Escondido por padrão */
-  position: fixed; /* Fica sobre a página */
-  top: 0;
-  left: 0;
-  width: 100%; /* Ocupa a largura total */
-  height: 100%; /* Altura total */
-  background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+
+/* Modal de dados do paciente */
+
+#modal,
+#modalMaquina {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
 }
 
-/* Conteúdo do modal */
-#modal-content {
-  background: #fff; /* Fundo branco */
-  padding: 20px; /* Espaçamento interno */
-  border-radius: 8px; /* Bordas arredondadas */
-  width: 320px; /* Largura fixa */
+#modal.show,
+#modalMaquina.show {
+    display: flex;
+    animation: fadeIn 0.3s ease-out;
 }
 
-/* Estilo dos grupos do formulário */
+
+/* Conteúdo centralizado do modal do paciente */
+
+#modal-content,
+#modalMaquinaContent {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 320px;
+}
+
+
+/* Grupos de formulário */
+
 .form-group {
-  margin-bottom: 15px; /* Espaçamento inferior */
+    margin-bottom: 15px;
 }
 
 .form-group label {
-  display: block; /* Exibe como bloco */
-  margin-bottom: 5px; /* Espaçamento inferior */
-  font-size: 0.9rem; /* Tamanho da fonte */
-  color: #333; /* Cor do texto */
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #333;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 100%; /* Largura total */
-  padding: 8px; /* Espaçamento interno */
-  font-size: 0.9rem; /* Tamanho da fonte */
-  border: 1px solid #ccc; /* Borda padrão */
-  border-radius: 4px; /* Bordas arredondadas */
+    width: 100%;
+    padding: 8px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-/* Estilo do modal ao ser exibido */
-#modal.show {
-  display: flex; /* Torna visível e centralizado */
-  animation: fadeIn 0.3s ease-out; /* Animação ao abrir */
+
+/* Estilo dos botões no modal da máquina */
+
+#formMaquina label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
 }
 
-/* Animação de fade in */
+#formMaquina button {
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+
+/* Animação para exibir modais */
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
