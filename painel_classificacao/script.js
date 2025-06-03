@@ -1,13 +1,14 @@
+/* URL do Web App do Apps Script (já fornecida por você) */
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbyaihPs8SLCWmOFnhm0RyBOd2XjQq6WnhW6uXkM_OTEAdiwj6xnUhx9lT1ZT47keBiCXg/exec";
+  "https://script.google.com/macros/s/AKfycbwVZTKjNARuWKLEADu4KcFUz0-xT9OJ88Q-8Y9lzQF-9B8Nowa2jcXHJM71Sg_cTkWbvQ/exec";
 
-let senhas = [];
-let senhaSelecionada = "";
-let maquinaSelecionada = "Classificacao1";
+let senhas = []; // Armazena as senhas carregadas
+let senhaSelecionada = ""; // Armazena a senha selecionada no modal
 
-const tbody = document.querySelector("#senhaTable tbody");
+const tbody = document.querySelector("#senhaTable tbody"); // Corpo da tabela
+const POLLING_INTERVAL = 5000; // Intervalo de atualização automática
 
-// Modais e botões
+// Elementos do modal
 const modal = document.getElementById("modal");
 const nomeInput = document.getElementById("nome");
 const idadeInput = document.getElementById("idade");
@@ -17,15 +18,11 @@ const observacaoInput = document.getElementById("observacao");
 const salvarBtn = document.getElementById("salvarBtn");
 const cancelarBtn = document.getElementById("cancelarBtn");
 
-const modalConfig = document.getElementById("modalConfig");
-const btnConfig = document.getElementById("btnConfig");
-const salvarConfigBtn = document.getElementById("salvarConfigBtn");
-const cancelarConfigBtn = document.getElementById("cancelarConfigBtn");
-const formConfig = document.getElementById("formConfig");
-
-// Renderiza tabela com as senhas da máquina selecionada
+/**
+ * Renderiza as linhas da tabela com os dados das senhas
+ */
 function render() {
-  tbody.innerHTML = "";
+  tbody.innerHTML = ""; // Limpa a tabela antes de renderizar
   senhas.forEach(({ senha, data, status }) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -41,13 +38,13 @@ function render() {
   });
 }
 
-// Busca as senhas da máquina no Apps Script
-async function carregarSenhas() {
+/**
+ * Carrega as senhas via Apps Script (listagem)
+ */
+async function carregarSenhas(maquina) {
   try {
     const resp = await fetch(
-      `${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(
-        maquinaSelecionada
-      )}`
+      `${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(maquina)}`
     );
     senhas = await resp.json();
     render();
@@ -56,20 +53,26 @@ async function carregarSenhas() {
   }
 }
 
-// Abre modal para preencher dados do paciente
+/**
+ * Função para abrir o modal e limpar campos
+ */
 function abrirModal(senha) {
   senhaSelecionada = senha;
   limparFormulario();
   modal.classList.add("show");
 }
 
-// Fecha modal de dados
+/**
+ * Fecha o modal (sem enviar dados) e limpa o formulário
+ */
 function cancelarModal() {
   modal.classList.remove("show");
   limparFormulario();
 }
 
-// Limpa formulário
+/**
+ * Limpa todos os campos do formulário dentro do modal
+ */
 function limparFormulario() {
   nomeInput.value = "";
   idadeInput.value = "";
@@ -78,13 +81,20 @@ function limparFormulario() {
   observacaoInput.value = "";
 }
 
-// Salva dados do paciente no Apps Script (inclui máquina)
+/**
+ * Salva os dados do paciente e faz a chamada (action=chamar)
+ * Depois fecha o modal e recarrega a lista
+ */
 async function salvarDados() {
   const nome = nomeInput.value.trim();
   const idade = idadeInput.value.trim();
   const especialidade = especialidadeInput.value.trim();
   const cor = corInput.value;
   const observacao = observacaoInput.value.trim();
+
+  // Pega a "máquina" da URL (se existir), senão usa "Classificacao1"
+  const urlParams = new URLSearchParams(window.location.search);
+  const maquina = urlParams.get("maquina") || "Classificacao1";
 
   if (!nome || !idade || !especialidade || !cor) {
     alert("Por favor, preencha todos os campos obrigatórios.");
@@ -95,11 +105,9 @@ async function salvarDados() {
     const resp = await fetch(
       `${WEB_APP_URL}?action=chamar&senha=${encodeURIComponent(
         senhaSelecionada
-      )}&maquina=${encodeURIComponent(
-        maquinaSelecionada
-      )}&nome=${encodeURIComponent(nome)}&idade=${encodeURIComponent(
-        idade
-      )}&especialidade=${encodeURIComponent(
+      )}&maquina=${encodeURIComponent(maquina)}&nome=${encodeURIComponent(
+        nome
+      )}&idade=${encodeURIComponent(idade)}&especialidade=${encodeURIComponent(
         especialidade
       )}&cor=${encodeURIComponent(cor)}&observacao=${encodeURIComponent(
         observacao
@@ -109,7 +117,7 @@ async function salvarDados() {
     if (result.success) {
       alert("Dados salvos e senha colocada em triagem!");
       cancelarModal();
-      carregarSenhas();
+      carregarSenhas(maquina);
     } else {
       alert("Erro ao salvar dados: " + result.message);
     }
@@ -118,20 +126,20 @@ async function salvarDados() {
   }
 }
 
-// Exclui senha da máquina selecionada
+/**
+ * Exclui uma senha (action=excluir) e recarrega a lista
+ */
 async function excluirSenha(senha) {
   if (!confirm(`Tem certeza que quer excluir a senha ${senha}?`)) return;
 
   try {
-    const resp = await fetch(
-      `${WEB_APP_URL}?action=excluir&senha=${senha}&maquina=${encodeURIComponent(
-        maquinaSelecionada
-      )}`
-    );
+    const resp = await fetch(`${WEB_APP_URL}?action=excluir&senha=${senha}`);
     const result = await resp.json();
     if (result.success) {
       alert("Senha excluída com sucesso!");
-      carregarSenhas();
+      const urlParams = new URLSearchParams(window.location.search);
+      const maquina = urlParams.get("maquina") || "Classificacao1";
+      carregarSenhas(maquina);
     } else {
       alert("Erro ao excluir senha: " + result.message);
     }
@@ -140,47 +148,32 @@ async function excluirSenha(senha) {
   }
 }
 
-// Abre modal de configuração da máquina
-function abrirModalConfig() {
-  // Marca radio da máquina atual
-  const radios = formConfig.elements["maquina"];
-  for (const radio of radios) {
-    radio.checked = radio.value === maquinaSelecionada;
-  }
-  modalConfig.classList.add("show");
+/**
+ * Inicia a atualização periódica (polling) de senhas
+ */
+function iniciarAtualizacaoAutomatica() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const maquina = urlParams.get("maquina") || "Classificacao1";
+
+  // Primeiro carregamento imediato
+  carregarSenhas(maquina);
+
+  // Recarrega a cada POLLING_INTERVAL
+  setInterval(() => {
+    carregarSenhas(maquina);
+  }, POLLING_INTERVAL);
 }
 
-// Fecha modal de configuração
-function cancelarModalConfig() {
-  modalConfig.classList.remove("show");
-}
-
-// Salva máquina selecionada e recarrega lista
-function salvarConfig() {
-  const radios = formConfig.elements["maquina"];
-  for (const radio of radios) {
-    if (radio.checked) {
-      maquinaSelecionada = radio.value;
-      break;
-    }
-  }
-  cancelarModalConfig();
-  carregarSenhas();
-}
-
+// Liga eventos de botões e inicia polling quando DOM estiver pronto
 document.addEventListener("DOMContentLoaded", () => {
-  // Botão engrenagem abre modal configuração
-  btnConfig.addEventListener("click", abrirModalConfig);
+  // Abre modal ao clicar em "Chamar" (função é chamada por onclick nos botões gerados dinamicamente)
+  window.abrirModal = abrirModal; // Necessário para onclick inline
+  window.excluirSenha = excluirSenha; // Necessário para onclick inline
 
-  salvarConfigBtn.addEventListener("click", salvarConfig);
-  cancelarConfigBtn.addEventListener("click", cancelarModalConfig);
-
-  // Modal paciente
-  salvarBtn.addEventListener("click", salvarDados);
+  // Evento nos botões do modal
   cancelarBtn.addEventListener("click", cancelarModal);
+  salvarBtn.addEventListener("click", salvarDados);
 
-  carregarSenhas();
-
-  // Atualiza a lista a cada 5s
-  setInterval(carregarSenhas, 5000);
+  // Iniciar atualização automática
+  iniciarAtualizacaoAutomatica();
 });

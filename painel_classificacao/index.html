@@ -6,7 +6,21 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Painel de Classificação de Risco</h1>
+    <h1>
+      Painel de Classificação de Risco
+      <button
+        id="btnEngrenagem"
+        title="Configurar Máquina"
+        style="font-size: 1.3rem; margin-left: 15px; cursor: pointer"
+      >
+        ⚙️
+      </button>
+      <span
+        id="spanMaquina"
+        style="font-size: 1rem; margin-left: 10px; color: #555"
+      ></span>
+    </h1>
+
     <table id="senhaTable">
       <thead>
         <tr>
@@ -19,7 +33,8 @@
       <tbody></tbody>
     </table>
 
-    <div id="modal">
+    <!-- Modal para preencher dados do paciente -->
+    <div id="modal" class="modal">
       <div id="modal-content">
         <h2>Preencher Dados do Paciente</h2>
         <form id="form">
@@ -38,7 +53,6 @@
           <div class="form-group">
             <label for="cor">Cor</label>
             <select id="cor" required>
-              <option value="">Selecione...</option>
               <option value="Vermelho">Vermelho</option>
               <option value="Amarelo">Amarelo</option>
               <option value="Verde">Verde</option>
@@ -51,6 +65,25 @@
           </div>
           <button type="button" id="salvarBtn">Salvar</button>
           <button type="button" id="cancelarBtn">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal para selecionar máquina -->
+    <div id="modalMaquina" class="modal">
+      <div class="modal-content">
+        <h2>Selecionar Máquina</h2>
+        <form id="formMaquina">
+          <label>
+            <input type="radio" name="classificacao" value="Classificação 01" />
+            Classificação 01 </label
+          ><br />
+          <label>
+            <input type="radio" name="classificacao" value="Classificação 02" />
+            Classificação 02 </label
+          ><br /><br />
+          <button type="button" id="salvarMaquinaBtn">Salvar</button>
+          <button type="button" id="cancelarMaquinaBtn">Cancelar</button>
         </form>
       </div>
     </div>
