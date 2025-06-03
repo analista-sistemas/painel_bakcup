@@ -1,5 +1,5 @@
 const WEB_APP_URL =
-    "https://script.google.com/macros/s/AKfycbw7k-uOVaetUo6rAqTqZ0Sd218Lyx-F_lpBbexG_mwVVUYizReQCDm3pTu-zsQip3EhNw/exec";
+    "https://script.google.com/macros/s/AKfycbxe4HSdE6sxDuDMkV5-CLpyrALdE-WYCb-kmUU_7YZ5h7J7Rk9w3NtXSiJMTsG7BYgdDQ/exec";
 
 let senhas = [];
 const tbody = document.querySelector("#senhaTable tbody");
@@ -12,7 +12,7 @@ const salvarMaquinaBtn = document.getElementById("salvarMaquinaBtn");
 const cancelarMaquinaBtn = document.getElementById("cancelarMaquinaBtn");
 const spanMaquina = document.getElementById("spanMaquina");
 
-// Notificador
+// Notificador de topo
 const notificador = document.createElement("div");
 notificador.id = "notificador";
 notificador.style.position = "fixed";
@@ -58,8 +58,10 @@ function render() {
 // Carrega senhas com status "Aguardando Recepção"
 async function carregarSenhas(maquina) {
     try {
-        // Deve chamar action=listar, pois o Apps Script usa listarSenhasRecepcao
-        const resp = await fetch(`${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(maquina)}`);
+        // O Apps Script espera action=listar para chamar listarSenhasRecepcao()
+        const resp = await fetch(
+            `${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(maquina)}`
+        );
         senhas = await resp.json();
         render();
     } catch (err) {
@@ -75,7 +77,9 @@ async function chamarPaciente(senha) {
 // Libera o paciente para o médico (muda status para "Aguardando Médico")
 async function liberarPaciente(senha) {
     try {
-        const resp = await fetch(`${WEB_APP_URL}?action=liberar&senha=${encodeURIComponent(senha)}`);
+        const resp = await fetch(
+            `${WEB_APP_URL}?action=liberar&senha=${encodeURIComponent(senha)}`
+        );
         const result = await resp.json();
         if (result.success) {
             mostrarMensagem("Paciente liberado para o médico.");
@@ -93,7 +97,9 @@ async function liberarPaciente(senha) {
 async function excluirSenha(senha) {
     if (!confirm(`Tem certeza que deseja excluir a senha ${senha}?`)) return;
     try {
-        const resp = await fetch(`${WEB_APP_URL}?action=excluir&senha=${encodeURIComponent(senha)}`);
+        const resp = await fetch(
+            `${WEB_APP_URL}?action=excluir&senha=${encodeURIComponent(senha)}`
+        );
         const result = await resp.json();
         if (result.success) {
             const maquina = localStorage.getItem("maquinaSelecionada") || "Recepção 01";
@@ -118,7 +124,7 @@ btnEngrenagem.addEventListener("click", () => {
     modalMaquina.classList.add("show");
     const maquinaSalva = localStorage.getItem("maquinaSelecionada");
     if (maquinaSalva) {
-        document.querySelectorAll("input[name='recepcao']").forEach(radio => {
+        document.querySelectorAll("input[name='recepcao']").forEach((radio) => {
             radio.checked = radio.value === maquinaSalva;
         });
     }
