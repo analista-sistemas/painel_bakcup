@@ -5,26 +5,22 @@ let senhas = [];
 let consultorioSelecionado = "";
 let especialidadesSelecionadas = [];
 
-// Elementos
 const tbody = document.querySelector("#senhaTable tbody");
 const spanMaquina = document.getElementById("spanMaquina");
 const modalMaquina = document.getElementById("modalMaquina");
 const btnEngrenagem = document.getElementById("btnEngrenagem");
 const salvarMaquinaBtn = document.getElementById("salvarMaquinaBtn");
 const cancelarMaquinaBtn = document.getElementById("cancelarMaquinaBtn");
-
-// Filtro de especialidade
 const btnFiltro = document.getElementById("btnFiltroEspecialidade");
 const filtroEspecialidades = document.getElementById("filtroEspecialidades");
 const selectAll = document.getElementById("selectAll");
 
-// Abrir modal consultório
 btnEngrenagem.addEventListener("click", () => {
   modalMaquina.classList.add("show");
-  const maquinaSalva = localStorage.getItem("consultorioSelecionado");
-  if (maquinaSalva) {
+  const saved = localStorage.getItem("consultorioSelecionado");
+  if (saved) {
     document.querySelectorAll("input[name='consultorio']").forEach((radio) => {
-      radio.checked = radio.value === maquinaSalva;
+      radio.checked = radio.value === saved;
     });
   }
 });
@@ -48,36 +44,32 @@ salvarMaquinaBtn.addEventListener("click", () => {
   carregarSenhas();
 });
 
-// Abrir filtro de especialidade
 btnFiltro.addEventListener("click", () => {
   filtroEspecialidades.classList.toggle("show");
 });
 
-// Fechar filtro
 document.getElementById("fecharFiltroBtn").addEventListener("click", () => {
   filtroEspecialidades.classList.remove("show");
 });
 
-// Selecionar todas
 selectAll.addEventListener("change", () => {
-  document.querySelectorAll(".especialidade").forEach((cb) => {
-    cb.checked = selectAll.checked;
-  });
+  document
+    .querySelectorAll(".especialidade")
+    .forEach((cb) => (cb.checked = selectAll.checked));
   atualizarFiltroEspecialidades();
 });
 
-// Atualizar filtro individual
 document.querySelectorAll(".especialidade").forEach((cb) => {
   cb.addEventListener("change", atualizarFiltroEspecialidades);
 });
 
 function atualizarFiltroEspecialidades() {
-  const checkboxes = document.querySelectorAll(".especialidade:checked");
-  especialidadesSelecionadas = Array.from(checkboxes).map((cb) => cb.value);
+  especialidadesSelecionadas = Array.from(
+    document.querySelectorAll(".especialidade:checked")
+  ).map((cb) => cb.value);
   render();
 }
 
-// Renderizar tabela
 function render() {
   tbody.innerHTML = "";
   senhas
@@ -90,31 +82,29 @@ function render() {
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
-                <td>${senha}</td>
-                <td>${nome || "-"}</td>
-                <td>${new Date(data).toLocaleString()}</td>
-                <td>${status}</td>
-                <td>${especialidade}</td>
-                <td><span class="cor-bolinha cor-${cor}"></span></td>
-                <td>
-                    <button class="btn-primario" onclick="chamarPaciente('${senha}')">Chamar</button>
-                    <button class="btn-finalizar" onclick="liberarPaciente('${senha}')">Liberar</button>
-                </td>
-            `;
+        <td>${senha}</td>
+        <td>${nome || "-"}</td>
+        <td>${new Date(data).toLocaleString()}</td>
+        <td>${status}</td>
+        <td>${especialidade}</td>
+        <td><span class="cor-bolinha cor-${cor}"></span></td>
+        <td>
+          <button class="btn-primario" onclick="chamarPaciente('${senha}')">Chamar</button>
+          <button class="btn-finalizar" onclick="liberarPaciente('${senha}')">Liberar</button>
+        </td>
+      `;
 
       tbody.appendChild(tr);
     });
 }
 
-// Chamar (simples alerta, futura integração com TV)
 function chamarPaciente(senha) {
   alert(`Chamando paciente: ${senha}`);
 }
 
-// Liberar paciente → muda status para "Atendimento Finalizado"
 async function liberarPaciente(senha) {
   if (!consultorioSelecionado) {
-    alert("Você precisa selecionar um consultório antes.");
+    alert("Você precisa selecionar um consultório.");
     return;
   }
 
@@ -135,7 +125,6 @@ async function liberarPaciente(senha) {
   }
 }
 
-// Carregar pacientes com status "Aguardando Médico"
 async function carregarSenhas() {
   try {
     const resp = await fetch(`${WEB_APP_URL}?action=listar`);
@@ -146,7 +135,6 @@ async function carregarSenhas() {
   }
 }
 
-// Inicialização
 document.addEventListener("DOMContentLoaded", () => {
   consultorioSelecionado = localStorage.getItem("consultorioSelecionado") || "";
   if (consultorioSelecionado) {
