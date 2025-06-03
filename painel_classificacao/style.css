@@ -129,9 +129,15 @@ button#cancelarBtn:hover {
 /* Estilo dos botões no modal da máquina */
 
 #formMaquina label {
-    display: block;
-    margin-bottom: 8px;
+    display: flex;
+    /* Alinha input e texto lado a lado */
+    align-items: center;
+    /* Alinha verticalmente */
+    margin-bottom: 5px;
+    /* Espaço pequeno entre as opções */
     font-size: 1rem;
+    gap: 8px;
+    /* Espaço entre o botão e o texto */
 }
 
 #formMaquina button {
