@@ -1,6 +1,6 @@
 /* URL do Web App do Apps Script (já fornecida por você) */
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbwHrqU6YNofcHZDtNWcuhNM5ujnkiIbiGM33Wcgv30sUgC8YISGhSlZE4nNg8iV_Qa3sg/exec";
+  "https://script.google.com/macros/s/AKfycbzy6LrIq81fBqBsia6AJwq8P_mW3MFFQ4sqiYD_RmOOY4lZEh7cYETeKKlASxAI1f2yEQ/exec";
 
 let senhas = []; // Armazena as senhas carregadas
 let senhaSelecionada = ""; // Armazena a senha selecionada no modal
