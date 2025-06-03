@@ -14,8 +14,7 @@
         <span id="spanMaquina" style="font-size: 1rem; margin-left: 10px; color: #555"></span>
     </h1>
 
-    <div id="spinner" class="spinner"></div>
-
+    <!-- Tabela com senhas -->
     <table id="senhaTable">
         <thead>
             <tr>
@@ -28,6 +27,7 @@
         <tbody></tbody>
     </table>
 
+    <!-- Modal: Preencher dados do paciente -->
     <div id="modal" class="modal">
         <div id="modal-content">
             <h2>Preencher Dados do Paciente</h2>
@@ -63,12 +63,17 @@
         </div>
     </div>
 
+    <!-- Modal: Seleção de máquina -->
     <div id="modalMaquina" class="modal">
         <div id="modalMaquinaContent">
             <h2>Selecionar Máquina</h2>
             <form id="formMaquina">
-                <label><input type="radio" name="classificacao" value="Classificação 01" /> Classificação 01</label>
-                <label><input type="radio" name="classificacao" value="Classificação 02" /> Classificação 02</label>
+                <label>
+          <input type="radio" name="classificacao" value="Classificação 01" /> Classificação 01
+        </label>
+                <label>
+          <input type="radio" name="classificacao" value="Classificação 02" /> Classificação 02
+        </label>
                 <div style="margin-top: 15px;">
                     <button type="button" id="salvarMaquinaBtn" class="btn-primario">Salvar</button>
                     <button type="button" id="cancelarMaquinaBtn" class="btn-perigo">Cancelar</button>

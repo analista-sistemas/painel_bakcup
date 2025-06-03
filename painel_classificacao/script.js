@@ -27,6 +27,29 @@ const salvarMaquinaBtn = document.getElementById("salvarMaquinaBtn");
 const cancelarMaquinaBtn = document.getElementById("cancelarMaquinaBtn");
 const spanMaquina = document.getElementById("spanMaquina");
 
+// Elemento de notificação
+const notificador = document.createElement("div");
+notificador.id = "notificador";
+notificador.style.position = "fixed";
+notificador.style.top = "15px";
+notificador.style.left = "50%";
+notificador.style.transform = "translateX(-50%)";
+notificador.style.background = "#38c172";
+notificador.style.color = "white";
+notificador.style.padding = "10px 20px";
+notificador.style.borderRadius = "5px";
+notificador.style.display = "none";
+notificador.style.zIndex = "9999";
+document.body.appendChild(notificador);
+
+function mostrarMensagem(texto) {
+    notificador.textContent = texto;
+    notificador.style.display = "block";
+    setTimeout(() => {
+        notificador.style.display = "none";
+    }, 3000);
+}
+
 // Função para renderizar tabela com base nas senhas
 function render() {
     tbody.innerHTML = "";
@@ -37,12 +60,11 @@ function render() {
         // Define botões dinamicamente com base no status da senha
         let botoes = "";
         if (status === "Em triagem") {
-            botoes += `<button class="btn-finalizar" onclick="finalizarTriagem('${senha}')">Finalizar Triagem</button>`;
+            botoes += `<button class="btn-finalizar" onclick="finalizarTriagem('${senha}')">Finalizar Classificação</button>`;
         } else {
             botoes += `<button class="btn-primario" onclick="abrirModal('${senha}')">Chamar</button>`;
+            botoes += `<button class="btn-perigo" onclick="excluirSenha('${senha}')">Excluir</button>`;
         }
-
-        botoes += `<button class="btn-perigo" onclick="excluirSenha('${senha}')">Excluir</button>`;
 
         tr.innerHTML = `
       <td>${senha}</td>
@@ -88,28 +110,6 @@ function limparFormulario() {
     observacaoInput.value = "";
 }
 
-// Mostra uma mensagem no topo da tela (alerta leve)
-function mostrarMensagem(texto) {
-    const msg = document.createElement("div");
-    msg.textContent = texto;
-    msg.style.position = "fixed";
-    msg.style.top = "20px";
-    msg.style.left = "50%";
-    msg.style.transform = "translateX(-50%)";
-    msg.style.backgroundColor = "#38c172";
-    msg.style.color = "white";
-    msg.style.padding = "10px 20px";
-    msg.style.borderRadius = "6px";
-    msg.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
-    msg.style.zIndex = "9999";
-
-    document.body.appendChild(msg);
-
-    setTimeout(() => {
-        document.body.removeChild(msg);
-    }, 2500);
-}
-
 // Salva dados e marca como "Em triagem"
 async function salvarDados() {
     const nome = nomeInput.value.trim();
@@ -132,7 +132,7 @@ async function salvarDados() {
         );
         const result = await resp.json();
         if (result.success) {
-            mostrarMensagem("Dados salvos com sucesso.");
+            mostrarMensagem("Dados salvos com sucesso!");
             carregarSenhas(maquina);
         } else {
             alert("Erro ao salvar dados: " + result.message);
@@ -149,6 +149,7 @@ async function finalizarTriagem(senha) {
         const resp = await fetch(`${WEB_APP_URL}?action=finalizarTriagem&senha=${encodeURIComponent(senha)}`);
         const result = await resp.json();
         if (result.success) {
+            mostrarMensagem("Classificação finalizada.");
             carregarSenhas(maquina);
         } else {
             alert("Erro ao finalizar triagem: " + result.message);

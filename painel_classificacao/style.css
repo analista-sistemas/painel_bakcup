@@ -1,8 +1,13 @@
+/* Reset básico */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
+
+/* Estilo geral do corpo */
 
 body {
     font-family: Arial, sans-serif;
@@ -10,10 +15,16 @@ body {
     background: #f9f9f9;
 }
 
+
+/* Título principal */
+
 h1 {
     color: #333;
     margin-bottom: 10px;
 }
+
+
+/* Tabela de senhas */
 
 table {
     width: 100%;
@@ -28,6 +39,9 @@ td {
     text-align: left;
 }
 
+
+/* Botões */
+
 button {
     padding: 6px 12px;
     cursor: pointer;
@@ -35,8 +49,11 @@ button {
     border: none;
     color: white;
     border-radius: 4px;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease-in-out;
 }
+
+
+/* Botão azul: Chamar */
 
 .btn-primario {
     background-color: #3490dc;
@@ -46,6 +63,9 @@ button {
     background-color: #2779bd;
 }
 
+
+/* Botão vermelho: Excluir / Cancelar */
+
 .btn-perigo {
     background-color: #e3342f;
 }
@@ -54,15 +74,33 @@ button {
     background-color: #cc1f1a;
 }
 
-.btn-finalizar {
+
+/* Botão verde: Sucesso (opcional) */
+
+.btn-sucesso {
     background-color: #38c172;
 }
 
-.btn-finalizar:hover {
+.btn-sucesso:hover {
     background-color: #2f9e60;
 }
 
-.modal,
+
+/* Botão amarelo: Finalizar Classificação */
+
+.btn-finalizar {
+    background-color: #f6c23e;
+    color: #212529;
+}
+
+.btn-finalizar:hover {
+    background-color: #e0a800;
+}
+
+
+/* Modais */
+
+#modal,
 #modalMaquina {
     display: none;
     position: fixed;
@@ -76,11 +114,14 @@ button {
     z-index: 1000;
 }
 
-.modal.show,
+#modal.show,
 #modalMaquina.show {
     display: flex;
     animation: fadeIn 0.3s ease-out;
 }
+
+
+/* Conteúdo dos modais */
 
 #modal-content,
 #modalMaquinaContent {
@@ -90,6 +131,9 @@ button {
     width: 350px;
     z-index: 1001;
 }
+
+
+/* Formulários */
 
 .form-group {
     margin-bottom: 15px;
@@ -103,13 +147,17 @@ button {
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 8px;
     font-size: 0.9rem;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+
+/* Radios da seleção de máquina */
 
 #formMaquina label {
     display: flex;
@@ -119,38 +167,24 @@ button {
     gap: 8px;
 }
 
+
+/* Botões dentro do formulário de máquina */
+
 #formMaquina button {
     margin-right: 10px;
     margin-top: 10px;
 }
 
 
-/* Spinner */
+/* Notificação no topo (mensagem de sucesso) */
 
-.spinner {
-    display: none;
-    position: fixed;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 48px;
-    height: 48px;
-    border: 5px solid rgba(0, 0, 0, 0.1);
-    border-left-color: #3490dc;
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-    z-index: 2000;
+#notificador {
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.spinner.show {
-    display: block;
-}
 
-@keyframes spin {
-    to {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
+/* Animação */
 
 @keyframes fadeIn {
     from {
