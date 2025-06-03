@@ -1,13 +1,8 @@
-/* Reset básico */
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
-
-/* Estilo geral do corpo */
 
 body {
     font-family: Arial, sans-serif;
@@ -15,16 +10,10 @@ body {
     background: #f9f9f9;
 }
 
-
-/* Título principal */
-
 h1 {
     color: #333;
     margin-bottom: 10px;
 }
-
-
-/* Tabela de senhas */
 
 table {
     width: 100%;
@@ -40,7 +29,7 @@ td {
 }
 
 
-/* Botões */
+/* Botões base */
 
 button {
     padding: 6px 12px;
@@ -49,11 +38,11 @@ button {
     border: none;
     color: white;
     border-radius: 4px;
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s;
 }
 
 
-/* Botão azul: Chamar */
+/* Botão azul: Chamar / Salvar */
 
 .btn-primario {
     background-color: #3490dc;
@@ -64,7 +53,7 @@ button {
 }
 
 
-/* Botão vermelho: Excluir / Cancelar */
+/* Botão vermelho: Cancelar / Excluir */
 
 .btn-perigo {
     background-color: #e3342f;
@@ -75,30 +64,30 @@ button {
 }
 
 
-/* Botão verde: Sucesso (opcional) */
+/* Botão verde: Finalizar via tabela */
 
-.btn-sucesso {
+.btn-finalizar {
     background-color: #38c172;
 }
 
-.btn-sucesso:hover {
+.btn-finalizar:hover {
     background-color: #2f9e60;
 }
 
 
-/* Botão amarelo: Finalizar Classificação */
+/* Botão amarelo: Finalizar no modal */
 
-.btn-finalizar {
-    background-color: #f6c23e;
-    color: #212529;
+.btn-aviso {
+    background-color: #f1c40f;
+    color: #000;
 }
 
-.btn-finalizar:hover {
-    background-color: #e0a800;
+.btn-aviso:hover {
+    background-color: #d4ac0d;
 }
 
 
-/* Modais */
+/* Modal geral */
 
 #modal,
 #modalMaquina {
@@ -128,7 +117,7 @@ button {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
-    width: 350px;
+    width: 400px;
     z-index: 1001;
 }
 
@@ -147,8 +136,7 @@ button {
 }
 
 .form-group input,
-.form-group select,
-.form-group textarea {
+.form-group select {
     width: 100%;
     padding: 8px;
     font-size: 0.9rem;
@@ -157,7 +145,16 @@ button {
 }
 
 
-/* Radios da seleção de máquina */
+/* Botões alinhados */
+
+.botoes-modal {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+
+/* Radios da máquina */
 
 #formMaquina label {
     display: flex;
@@ -165,22 +162,6 @@ button {
     margin-bottom: 8px;
     font-size: 1rem;
     gap: 8px;
-}
-
-
-/* Botões dentro do formulário de máquina */
-
-#formMaquina button {
-    margin-right: 10px;
-    margin-top: 10px;
-}
-
-
-/* Notificação no topo (mensagem de sucesso) */
-
-#notificador {
-    font-size: 0.95rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 
