@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Painel Médico</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>
+      Painel Médico
+      <button id="btnEngrenagem" title="Selecionar Consultório">⚙️</button>
+      <button id="btnFiltro" title="Filtrar Especialidades">🩺</button>
+      <span id="spanConsultorio"></span>
+    </h1>
+
+    <div id="filtroEspecialidades" class="filtro-container">
+      <label><input type="checkbox" id="selectAll" /> Selecionar Todas</label>
+      <label
+        ><input type="checkbox" class="especialidade" value="Pediatria" />
+        Pediatria</label
+      >
+      <label
+        ><input type="checkbox" class="especialidade" value="Ortopedia" />
+        Ortopedia</label
+      >
+      <label
+        ><input type="checkbox" class="especialidade" value="Cirurgia Geral" />
+        Cirurgia Geral</label
+      >
+      <label
+        ><input type="checkbox" class="especialidade" value="Clínica Médica" />
+        Clínica Médica</label
+      >
+      <label
+        ><input type="checkbox" class="especialidade" value="Ginecologia" />
+        Ginecologia</label
+      >
+    </div>
+
+    <table id="senhaTable">
+      <thead>
+        <tr>
+          <th>Senha</th>
+          <th>Nome</th>
+          <th>Data/Hora</th>
+          <th>Status</th>
+          <th>Especialidade</th>
+          <th>Cor</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

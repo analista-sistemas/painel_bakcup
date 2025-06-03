@@ -1,0 +1,78 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+h1 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+#senhaTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+th,
+td {
+  padding: 6px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+button {
+  padding: 5px 8px;
+  margin-right: 3px;
+  background-color: #3490dc;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2779bd;
+}
+
+.filtro-container {
+  display: none;
+  margin: 10px 0;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.filtro-container label {
+  display: block;
+  margin: 5px 0;
+}
+
+#btnFiltro,
+#btnEngrenagem {
+  margin-left: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.cor-bolinha {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.cor-Vermelho {
+  background: red;
+}
+.cor-Amarelo {
+  background: yellow;
+}
+.cor-Verde {
+  background: green;
+}
+.cor-Azul {
+  background: blue;
+}
