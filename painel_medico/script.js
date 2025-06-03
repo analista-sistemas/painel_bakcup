@@ -1,5 +1,5 @@
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbz8D8c5HhGpaMmfuP42vjdfSI_-zX1J6iOhrWFtAURl-ldnXpC6tn7bopv8kZADicBftg/exec";
+  "https://script.google.com/macros/s/AKfycbxJWpNLB5weojI2iO_EBZSZYzReeE_zNrscPv3v7F7ICcwOyrNgbtvLxN6KFfNILw2Jcw/exec";
 
 let senhas = [];
 let consultorioSelecionado = "";
@@ -78,12 +78,13 @@ function render() {
         especialidadesSelecionadas.length === 0 ||
         especialidadesSelecionadas.includes(s.especialidade)
     )
-    .forEach(({ senha, nome, data, status, especialidade, cor }) => {
+    .forEach(({ senha, nome, idade, data, status, especialidade, cor }) => {
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
         <td>${senha}</td>
         <td>${nome || "-"}</td>
+        <td>${idade || "-"}</td>
         <td>${new Date(data).toLocaleString()}</td>
         <td>${status}</td>
         <td>${especialidade}</td>

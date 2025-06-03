@@ -39,6 +39,7 @@ button {
   transition: background-color 0.2s;
 }
 
+/* Botões padrão */
 .btn-primario {
   background-color: #3490dc;
 }
@@ -60,6 +61,28 @@ button {
   background-color: #2f9e60;
 }
 
+.btn-aviso {
+  background-color: #f1c40f;
+  color: #000;
+}
+.btn-aviso:hover {
+  background-color: #d4ac0d;
+}
+
+/* Botões ícones (⚙️, 🩺) sem fundo */
+.icone-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  margin-left: 10px;
+  cursor: pointer;
+  color: #333;
+}
+.icone-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Modal geral */
 .modal {
   display: none;
   position: fixed;
@@ -78,6 +101,7 @@ button {
   animation: fadeIn 0.3s ease-out;
 }
 
+/* Conteúdo dos modais */
 #modalMaquinaContent,
 #modalFiltroContent {
   background: #fff;
@@ -87,6 +111,7 @@ button {
   z-index: 1001;
 }
 
+/* Labels */
 #formMaquina label,
 #modalFiltroContent label {
   display: flex;
@@ -96,12 +121,14 @@ button {
   gap: 8px;
 }
 
+/* Botões dos modais */
 .botoes-modal {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 }
 
+/* Bolinhas de cor */
 .cor-bolinha {
   width: 16px;
   height: 16px;
@@ -122,6 +149,7 @@ button {
   background: blue;
 }
 
+/* Animação */
 @keyframes fadeIn {
   from {
     opacity: 0;
