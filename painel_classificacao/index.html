@@ -1,49 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Classificação de Risco</title>
+    <title>Painel de Classificação de Risco</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>Classificação de Risco</h1>
-      <div id="senha-container"></div>
-      <div id="modal" class="modal">
-        <div class="modal-content">
-          <h2>Preencher Dados do Paciente</h2>
-          <form id="form-dados">
+    <h1>Painel de Classificação de Risco</h1>
+
+    <table id="senhaTable">
+      <thead>
+        <tr>
+          <th>Senha</th>
+          <th>Data/Hora</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linhas geradas dinamicamente -->
+      </tbody>
+    </table>
+
+    <!-- Modal de preenchimento -->
+    <div id="modal" class="hidden">
+      <div id="modal-content">
+        <h2>Preencher Dados do Paciente</h2>
+        <form id="form">
+          <div class="form-group">
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" required />
+            <input type="text" id="nome" required />
+          </div>
+          <div class="form-group">
             <label for="idade">Idade</label>
-            <input type="number" id="idade" name="idade" required />
+            <input type="number" id="idade" required />
+          </div>
+          <div class="form-group">
             <label for="especialidade">Especialidade</label>
-            <input
-              type="text"
-              id="especialidade"
-              name="especialidade"
-              required
-            />
-            <label for="cor">Classificação</label>
-            <select id="cor" name="cor" required>
-              <option value="">Selecione</option>
-              <option value="Branco">Branco</option>
-              <option value="Verde">Verde</option>
-              <option value="Amarelo">Amarelo</option>
-              <option value="Azul">Azul</option>
+            <input type="text" id="especialidade" required />
+          </div>
+          <div class="form-group">
+            <label for="cor">Cor</label>
+            <select id="cor" required>
               <option value="Vermelho">Vermelho</option>
+              <option value="Amarelo">Amarelo</option>
+              <option value="Verde">Verde</option>
+              <option value="Azul">Azul</option>
             </select>
+          </div>
+          <div class="form-group">
             <label for="observacao">Observação</label>
-            <textarea id="observacao" name="observacao"></textarea>
-            <div class="modal-buttons">
-              <button type="button" id="cancelar">Cancelar</button>
-              <button type="submit" id="salvar">Salvar</button>
-            </div>
-          </form>
-        </div>
+            <input type="text" id="observacao" />
+          </div>
+          <button type="button" id="salvarBtn">Salvar</button>
+          <button type="button" id="cancelarBtn">Cancelar</button>
+        </form>
       </div>
     </div>
-    <script src="script.js"></script>
+
+    <script src="script.js" defer></script>
   </body>
 </html>
