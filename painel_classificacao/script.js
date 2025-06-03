@@ -1,115 +1,87 @@
-// URL do seu deploy do Apps Script
-const API_BASE_URL =
-  "https://script.google.com/macros/s/AKfycbzUX_OyTervwoAr41BfOQZgynKFXRjSmV96UjsZVmqKNsqI58jiUdlxOmeFbgIKwshSjw/exec";
+document.addEventListener("DOMContentLoaded", () => {
+  const listaSenhas = document.getElementById("listaSenhas");
+  const modalPaciente = document.getElementById("modalPaciente");
+  const formPaciente = document.getElementById("formPaciente");
+  const btnCancelar = document.getElementById("btnCancelar");
+  let senhaSelecionada = "";
 
-// Variáveis DOM
-const senhaLista = document.getElementById("senha-lista");
-const modal = document.getElementById("modal");
-const formPaciente = document.getElementById("form-paciente");
-const btnCancelar = document.getElementById("btn-cancelar");
+  // Dados iniciais simulados
+  const senhas = [
+    { id: "A011" },
+    { id: "A012" },
+    { id: "A013" },
+    { id: "A014" },
+  ];
 
-let senhas = []; // lista de senhas carregadas
-let senhaAtual = null; // senha que está sendo chamada/preenchida
+  function renderizarSenhas() {
+    listaSenhas.innerHTML = "";
+    senhas.forEach((senha, index) => {
+      const card = document.createElement("div");
+      card.className = "senhaCard";
+      card.innerHTML = `
+                <h2>${senha.id}</h2>
+                <button class="btnChamar" data-id="${index}">Chamar</button>
+                <button class="btnExcluir" data-id="${index}">Excluir</button>
+            `;
+      listaSenhas.appendChild(card);
+    });
 
-// Função para buscar senhas "Aguardando classificação"
-async function carregarSenhas() {
-  try {
-    const res = await fetch(`${API_BASE_URL}?action=listar&maquina=`);
-    const data = await res.json();
-    senhas = data;
-    renderizarSenhas();
-  } catch (error) {
-    alert("Erro ao carregar senhas: " + error.message);
+    document
+      .querySelectorAll(".btnChamar")
+      .forEach((btn) => btn.addEventListener("click", abrirModal));
+
+    document
+      .querySelectorAll(".btnExcluir")
+      .forEach((btn) => btn.addEventListener("click", excluirSenha));
   }
-}
 
-// Renderiza a lista de senhas no painel
-function renderizarSenhas() {
-  senhaLista.innerHTML = "";
-
-  if (senhas.length === 0) {
-    senhaLista.innerHTML = "<p>Nenhuma senha aguardando classificação.</p>";
-    return;
+  function abrirModal(event) {
+    senhaSelecionada =
+      event.target.parentElement.querySelector("h2").textContent;
+    modalPaciente.classList.add("active");
   }
 
-  senhas.forEach((item) => {
-    const div = document.createElement("div");
-    div.className = "senha-item";
-    div.innerHTML = `
-      <span><strong>Senha:</strong> ${item.senha}</span>
-      <button data-senha="${item.senha}">Chamar</button>
-    `;
-
-    div
-      .querySelector("button")
-      .addEventListener("click", () => abrirModal(item.senha));
-    senhaLista.appendChild(div);
+  btnCancelar.addEventListener("click", () => {
+    modalPaciente.classList.remove("active");
   });
-}
 
-// Abre o modal para preencher dados do paciente
-function abrirModal(senha) {
-  senhaAtual = senha;
-  limparFormulario();
-  modal.classList.remove("hidden");
-}
+  formPaciente.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const nome = document.getElementById("nome").value;
+    const idade = document.getElementById("idade").value;
+    const especialidade = document.getElementById("especialidade").value;
+    const observacao = document.getElementById("observacao").value;
+    const cor = document.querySelector('input[name="cor"]:checked').value;
 
-// Limpa todos os campos do formulário
-function limparFormulario() {
-  formPaciente.reset();
-}
+    const dados = {
+      senha: senhaSelecionada,
+      nome,
+      idade,
+      especialidade,
+      cor,
+      observacao,
+    };
 
-// Fecha o modal
-function fecharModal() {
-  modal.classList.add("hidden");
-  senhaAtual = null;
-}
+    fetch(
+      "https://script.google.com/macros/s/AKfycbzUX_OyTervwoAr41BfOQZgynKFXRjSmV96UjsZVmqKNsqI58jiUdlxOmeFbgIKwshSjw/exec",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados),
+      }
+    )
+      .then(() => {
+        alert("Dados salvos!");
+        modalPaciente.classList.remove("active");
+      })
+      .catch(() => alert("Erro ao salvar os dados."));
+  });
 
-// Função para salvar dados do paciente e atualizar a senha no Apps Script
-async function salvarDados(event) {
-  event.preventDefault();
-
-  const formData = new FormData(formPaciente);
-  const nome = formData.get("nome").trim();
-  const idade = formData.get("idade").trim();
-  const especialidade = formData.get("especialidade").trim();
-  const cor = formData.get("cor").trim();
-  const observacao = formData.get("observacao").trim();
-
-  if (!nome || !idade || !especialidade) {
-    alert("Por favor, preencha todos os campos obrigatórios.");
-    return;
+  function excluirSenha(event) {
+    const index = event.target.dataset.id;
+    senhas.splice(index, 1);
+    renderizarSenhas();
   }
 
-  try {
-    const url = new URL(API_BASE_URL);
-    url.searchParams.append("action", "chamar");
-    url.searchParams.append("senha", senhaAtual);
-    url.searchParams.append("maquina", "Maquina1"); // Se quiser, pode deixar dinâmico depois
-    url.searchParams.append("nome", nome);
-    url.searchParams.append("idade", idade);
-    url.searchParams.append("especialidade", especialidade);
-    url.searchParams.append("cor", cor);
-    url.searchParams.append("observacao", observacao);
-
-    const res = await fetch(url.toString());
-    const json = await res.json();
-
-    if (json.success) {
-      alert("Dados salvos com sucesso!");
-      fecharModal();
-      await carregarSenhas(); // Atualiza lista após salvar
-    } else {
-      alert("Erro ao salvar dados: " + (json.message || "Erro desconhecido"));
-    }
-  } catch (error) {
-    alert("Erro ao conectar com o servidor: " + error.message);
-  }
-}
-
-// Event listeners
-formPaciente.addEventListener("submit", salvarDados);
-btnCancelar.addEventListener("click", fecharModal);
-
-// Inicializa o painel carregando as senhas
-carregarSenhas();
+  renderizarSenhas();
+});
