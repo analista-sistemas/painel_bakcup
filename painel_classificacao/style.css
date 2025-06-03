@@ -1,108 +1,113 @@
-/* Reset básico (opcional) */
+/* Reset básico: remove margens, paddings e define box-sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Corpo da página */
+/* Estilo do corpo da página */
 body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  background: #f9f9f9;
+  font-family: Arial, sans-serif; /* Define a fonte */
+  padding: 20px; /* Espaçamento interno */
+  background: #f9f9f9; /* Cor de fundo */
 }
 
-/* Título */
+/* Estilo do título principal */
 h1 {
-  color: #333;
-  margin-bottom: 10px;
+  color: #333; /* Cor do texto */
+  margin-bottom: 10px; /* Espaçamento inferior */
 }
 
-/* Tabela de senhas */
+/* Estilo da tabela */
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  width: 100%; /* Largura total da página */
+  border-collapse: collapse; /* Remove bordas duplas */
+  margin-top: 20px; /* Espaçamento superior */
 }
+
 th,
 td {
-  padding: 12px;
-  border: 1px solid #ccc;
-  text-align: left;
+  padding: 12px; /* Espaçamento interno das células */
+  border: 1px solid #ccc; /* Borda das células */
+  text-align: left; /* Alinha o texto à esquerda */
 }
 
-/* Botões */
+/* Estilo dos botões */
 button {
-  padding: 6px 12px;
-  cursor: pointer;
-  margin-right: 5px;
-  background-color: #3490dc;
-  border: none;
-  color: white;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+  padding: 6px 12px; /* Espaçamento interno */
+  cursor: pointer; /* Exibe o cursor de clique */
+  margin-right: 5px; /* Espaçamento entre botões */
+  background-color: #3490dc; /* Cor de fundo padrão */
+  border: none; /* Remove a borda padrão */
+  color: white; /* Cor do texto */
+  border-radius: 4px; /* Bordas arredondadas */
+  transition: background-color 0.2s; /* Animação suave para hover */
 }
+
+/* Estilo ao passar o mouse sobre os botões */
 button:hover {
   background-color: #2779bd;
 }
+
+/* Estilo específico para o botão cancelar */
 button#cancelarBtn {
-  background-color: #6c757d;
-}
-button#cancelarBtn:hover {
-  background-color: #5a6268;
+  background-color: #6c757d; /* Cinza escuro */
 }
 
-/* Modal de preenchimento */
+button#cancelarBtn:hover {
+  background-color: #5a6268; /* Cor mais escura no hover */
+}
+
+/* Estilo do modal */
 #modal {
   display: none; /* Escondido por padrão */
-  position: fixed;
+  position: fixed; /* Fica sobre a página */
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100%; /* Ocupa a largura total */
+  height: 100%; /* Altura total */
   background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
 }
 
+/* Conteúdo do modal */
 #modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  width: 320px;
+  background: #fff; /* Fundo branco */
+  padding: 20px; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  width: 320px; /* Largura fixa */
 }
 
-/* Formulário */
+/* Estilo dos grupos do formulário */
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 15px; /* Espaçamento inferior */
 }
+
 .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 0.9rem;
-  color: #333;
+  display: block; /* Exibe como bloco */
+  margin-bottom: 5px; /* Espaçamento inferior */
+  font-size: 0.9rem; /* Tamanho da fonte */
+  color: #333; /* Cor do texto */
 }
+
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 100%;
-  padding: 8px;
-  font-size: 0.9rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 100%; /* Largura total */
+  padding: 8px; /* Espaçamento interno */
+  font-size: 0.9rem; /* Tamanho da fonte */
+  border: 1px solid #ccc; /* Borda padrão */
+  border-radius: 4px; /* Bordas arredondadas */
 }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 50px;
-}
-
-/* Animação ao exibir modal */
+/* Estilo do modal ao ser exibido */
 #modal.show {
-  display: flex;
-  animation: fadeIn 0.3s ease-out;
+  display: flex; /* Torna visível e centralizado */
+  animation: fadeIn 0.3s ease-out; /* Animação ao abrir */
 }
 
+/* Animação de fade in */
 @keyframes fadeIn {
   from {
     opacity: 0;

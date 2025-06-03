@@ -96,6 +96,11 @@ async function salvarDados() {
   const urlParams = new URLSearchParams(window.location.search);
   const maquina = urlParams.get("maquina") || "Classificacao1";
 
+  if (!nome || !idade || !especialidade || !cor) {
+    alert("Por favor, preencha todos os campos obrigatórios.");
+    return;
+  }
+
   try {
     const resp = await fetch(
       `${WEB_APP_URL}?action=chamar&senha=${encodeURIComponent(

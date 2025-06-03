@@ -3,17 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <title>Painel de Classificação de Risco</title>
-    <!-- Link para o CSS externo -->
+    <!-- Link para o arquivo CSS externo -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Título da página -->
+    <!-- Título principal da página -->
     <h1>Painel de Classificação de Risco</h1>
 
-    <!-- Tabela para listar as senhas aguardando -->
+    <!-- Tabela onde as senhas serão listadas -->
     <table id="senhaTable">
       <thead>
         <tr>
+          <!-- Cabeçalhos das colunas da tabela -->
           <th>Senha</th>
           <th>Data/Hora</th>
           <th>Status</th>
@@ -21,29 +22,35 @@
         </tr>
       </thead>
       <tbody>
-        <!-- As linhas da tabela são geradas dinamicamente pelo JavaScript -->
+        <!-- O corpo da tabela será gerado dinamicamente pelo JavaScript -->
       </tbody>
     </table>
 
-    <!-- Modal para preencher informações do paciente -->
+    <!-- Modal usado para preencher os dados do paciente -->
     <div id="modal">
       <div id="modal-content">
+        <!-- Título do modal -->
         <h2>Preencher Dados do Paciente</h2>
+        <!-- Formulário para entrada de dados -->
         <form id="form">
           <div class="form-group">
             <label for="nome">Nome</label>
+            <!-- Campo para inserir o nome do paciente -->
             <input type="text" id="nome" required />
           </div>
           <div class="form-group">
             <label for="idade">Idade</label>
+            <!-- Campo para inserir a idade do paciente -->
             <input type="number" id="idade" required />
           </div>
           <div class="form-group">
             <label for="especialidade">Especialidade</label>
+            <!-- Campo para inserir a especialidade -->
             <input type="text" id="especialidade" required />
           </div>
           <div class="form-group">
             <label for="cor">Cor</label>
+            <!-- Dropdown para selecionar a cor da classificação -->
             <select id="cor" required>
               <option value="Vermelho">Vermelho</option>
               <option value="Amarelo">Amarelo</option>
@@ -53,15 +60,17 @@
           </div>
           <div class="form-group">
             <label for="observacao">Observação</label>
+            <!-- Campo para inserir observações adicionais -->
             <input type="text" id="observacao" />
           </div>
+          <!-- Botões do modal -->
           <button type="button" id="salvarBtn">Salvar</button>
           <button type="button" id="cancelarBtn">Cancelar</button>
         </form>
       </div>
     </div>
 
-    <!-- Link para o JavaScript externo (defer garante que o HTML carregue antes do script) -->
+    <!-- Link para o arquivo JavaScript externo -->
     <script src="script.js" defer></script>
   </body>
 </html>
