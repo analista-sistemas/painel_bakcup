@@ -1,5 +1,3 @@
-// --- script.js FINAL - COMPLETO E COMENTADO ---
-
 // URL pública do Apps Script (já configurada)
 const WEB_APP_URL =
     "https://script.google.com/macros/s/AKfycbwVZTKjNARuWKLEADu4KcFUz0-xT9OJ88Q-8Y9lzQF-9B8Nowa2jcXHJM71Sg_cTkWbvQ/exec";
@@ -90,6 +88,28 @@ function limparFormulario() {
     observacaoInput.value = "";
 }
 
+// Mostra uma mensagem no topo da tela (alerta leve)
+function mostrarMensagem(texto) {
+    const msg = document.createElement("div");
+    msg.textContent = texto;
+    msg.style.position = "fixed";
+    msg.style.top = "20px";
+    msg.style.left = "50%";
+    msg.style.transform = "translateX(-50%)";
+    msg.style.backgroundColor = "#38c172";
+    msg.style.color = "white";
+    msg.style.padding = "10px 20px";
+    msg.style.borderRadius = "6px";
+    msg.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+    msg.style.zIndex = "9999";
+
+    document.body.appendChild(msg);
+
+    setTimeout(() => {
+        document.body.removeChild(msg);
+    }, 2500);
+}
+
 // Salva dados e marca como "Em triagem"
 async function salvarDados() {
     const nome = nomeInput.value.trim();
@@ -104,7 +124,7 @@ async function salvarDados() {
         return;
     }
 
-    modal.classList.remove("show"); // Fecha o modal logo após clicar
+    modal.classList.remove("show");
 
     try {
         const resp = await fetch(
@@ -112,6 +132,7 @@ async function salvarDados() {
         );
         const result = await resp.json();
         if (result.success) {
+            mostrarMensagem("Dados salvos com sucesso.");
             carregarSenhas(maquina);
         } else {
             alert("Erro ao salvar dados: " + result.message);
