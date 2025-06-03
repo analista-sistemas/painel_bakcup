@@ -1,3 +1,5 @@
+// --- script.js FINAL - COMPLETO E COMENTADO ---
+
 // URL pública do Apps Script (já configurada)
 const WEB_APP_URL =
     "https://script.google.com/macros/s/AKfycbwVZTKjNARuWKLEADu4KcFUz0-xT9OJ88Q-8Y9lzQF-9B8Nowa2jcXHJM71Sg_cTkWbvQ/exec";
@@ -102,14 +104,14 @@ async function salvarDados() {
         return;
     }
 
+    modal.classList.remove("show"); // Fecha o modal logo após clicar
+
     try {
         const resp = await fetch(
             `${WEB_APP_URL}?action=chamar&senha=${encodeURIComponent(senhaSelecionada)}&maquina=${encodeURIComponent(maquina)}&nome=${encodeURIComponent(nome)}&idade=${encodeURIComponent(idade)}&especialidade=${encodeURIComponent(especialidade)}&cor=${encodeURIComponent(cor)}&observacao=${encodeURIComponent(observacao)}`
         );
         const result = await resp.json();
         if (result.success) {
-            alert("Dados salvos. Paciente em triagem.");
-            cancelarModal();
             carregarSenhas(maquina);
         } else {
             alert("Erro ao salvar dados: " + result.message);
@@ -126,7 +128,6 @@ async function finalizarTriagem(senha) {
         const resp = await fetch(`${WEB_APP_URL}?action=finalizarTriagem&senha=${encodeURIComponent(senha)}`);
         const result = await resp.json();
         if (result.success) {
-            alert("Triagem finalizada com sucesso!");
             carregarSenhas(maquina);
         } else {
             alert("Erro ao finalizar triagem: " + result.message);
@@ -138,12 +139,11 @@ async function finalizarTriagem(senha) {
 
 // Exclui senha
 async function excluirSenha(senha) {
-    if (!confirm(`Tem certeza que quer excluir a senha ${senha}?`)) return;
+    if (!confirm(`Tem certeza que deseja excluir a senha ${senha}?`)) return;
     try {
         const resp = await fetch(`${WEB_APP_URL}?action=excluir&senha=${senha}`);
         const result = await resp.json();
         if (result.success) {
-            alert("Senha excluída com sucesso!");
             const maquina = localStorage.getItem("maquinaSelecionada") || "Classificação 01";
             carregarSenhas(maquina);
         } else {
