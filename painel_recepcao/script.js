@@ -1,5 +1,5 @@
 const WEB_APP_URL =
-    "https://script.google.com/macros/s/AKfycbyGhNj65UuFw1GSrbNn0rrOZVQV05dDijpOVOXkI4aNvr9-rn6dyEvtJp84hrA1JBYyeA/exec";
+    "https://script.google.com/macros/s/AKfycbw7k-uOVaetUo6rAqTqZ0Sd218Lyx-F_lpBbexG_mwVVUYizReQCDm3pTu-zsQip3EhNw/exec";
 
 let senhas = [];
 const tbody = document.querySelector("#senhaTable tbody");
@@ -58,7 +58,8 @@ function render() {
 // Carrega senhas com status "Aguardando Recepção"
 async function carregarSenhas(maquina) {
     try {
-        const resp = await fetch(`${WEB_APP_URL}?action=listarRecepcao&maquina=${encodeURIComponent(maquina)}`);
+        // Deve chamar action=listar, pois o Apps Script usa listarSenhasRecepcao
+        const resp = await fetch(`${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(maquina)}`);
         senhas = await resp.json();
         render();
     } catch (err) {
@@ -66,7 +67,7 @@ async function carregarSenhas(maquina) {
     }
 }
 
-// Ação de chamar paciente (pode logar ou atualizar algum campo futuramente)
+// Ação de chamar paciente (exibição simples)
 async function chamarPaciente(senha) {
     mostrarMensagem(`Paciente ${senha} chamado.`);
 }
@@ -92,7 +93,7 @@ async function liberarPaciente(senha) {
 async function excluirSenha(senha) {
     if (!confirm(`Tem certeza que deseja excluir a senha ${senha}?`)) return;
     try {
-        const resp = await fetch(`${WEB_APP_URL}?action=excluir&senha=${senha}`);
+        const resp = await fetch(`${WEB_APP_URL}?action=excluir&senha=${encodeURIComponent(senha)}`);
         const result = await resp.json();
         if (result.success) {
             const maquina = localStorage.getItem("maquinaSelecionada") || "Recepção 01";
