@@ -1,5 +1,5 @@
 const WEB_APP_URL =
-    "https://script.google.com/macros/s/AKfycbxwkLBKRsoUPMPnieC-xQw2cn2yy661WMivy7rEuryUtU-5LKo2h_JFVz6M09RHCXg/exec";
+    "https://script.google.com/macros/s/AKfycbyGdc-0EN-Dj9War37ZGp0wdd2XF_aJc68uvRHUj0256_PEDPqyhUVCfzE3WjjnUnKsEA/exec";
 
 let senhas = [];
 const tbody = document.querySelector("#senhaTable tbody");
