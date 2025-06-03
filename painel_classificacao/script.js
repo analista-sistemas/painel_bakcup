@@ -1,18 +1,17 @@
-// --- script.js atualizado com comentários ---
+// --- script.js atualizado e COMPLETO com comentários ---
 
-// URL do Apps Script Web App
+// URL pública do Apps Script
 const WEB_APP_URL =
     "https://script.google.com/macros/s/AKfycbwVZTKjNARuWKLEADu4KcFUz0-xT9OJ88Q-8Y9lzQF-9B8Nowa2jcXHJM71Sg_cTkWbvQ/exec";
 
-// Armazena lista de senhas e a senha selecionada
-let senhas = [];
-let senhaSelecionada = "";
+let senhas = []; // Lista de senhas retornadas do servidor
+let senhaSelecionada = ""; // Senha em uso no modal
 
-// Referências DOM principais
+// Referências DOM
 const tbody = document.querySelector("#senhaTable tbody");
-const POLLING_INTERVAL = 5000; // Intervalo de atualização automática (5s)
+const POLLING_INTERVAL = 5000;
 
-// Elementos do modal de paciente
+// Campos do modal de paciente
 const modal = document.getElementById("modal");
 const nomeInput = document.getElementById("nome");
 const idadeInput = document.getElementById("idade");
@@ -22,20 +21,18 @@ const observacaoInput = document.getElementById("observacao");
 const salvarBtn = document.getElementById("salvarBtn");
 const cancelarBtn = document.getElementById("cancelarBtn");
 
-// Elementos do modal de máquina
+// Campos do modal de seleção de máquina
 const modalMaquina = document.getElementById("modalMaquina");
 const btnEngrenagem = document.getElementById("btnEngrenagem");
 const salvarMaquinaBtn = document.getElementById("salvarMaquinaBtn");
 const cancelarMaquinaBtn = document.getElementById("cancelarMaquinaBtn");
 const spanMaquina = document.getElementById("spanMaquina");
 
-// Renderiza a tabela de senhas
+// Renderiza a tabela com base nas senhas
 function render() {
     tbody.innerHTML = "";
     senhas.forEach(({ senha, data, status }) => {
         const tr = document.createElement("tr");
-
-        // Define quais botões exibir baseado no status
         const botoes = status === "Em triagem" ?
             `<button class="btn-finalizar" onclick="finalizarTriagem('${senha}')">Finalizar Triagem</button>` :
             `<button class="btn-primario" onclick="abrirModal('${senha}')">Chamar</button>`;
@@ -53,7 +50,7 @@ function render() {
     });
 }
 
-// Consulta senhas da planilha (filtro por máquina)
+// Consulta a API do Apps Script para obter senhas
 async function carregarSenhas(maquina) {
     try {
         const resp = await fetch(`${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(maquina)}`);
@@ -64,20 +61,20 @@ async function carregarSenhas(maquina) {
     }
 }
 
-// Abre o modal para preencher dados do paciente
+// Abre o modal de preenchimento do paciente
 function abrirModal(senha) {
     senhaSelecionada = senha;
     limparFormulario();
     modal.classList.add("show");
 }
 
-// Fecha o modal de paciente
+// Fecha o modal do paciente
 function cancelarModal() {
     modal.classList.remove("show");
     limparFormulario();
 }
 
-// Limpa campos do formulário do paciente
+// Limpa os campos do formulário do paciente
 function limparFormulario() {
     nomeInput.value = "";
     idadeInput.value = "";
@@ -86,7 +83,7 @@ function limparFormulario() {
     observacaoInput.value = "";
 }
 
-// Salva dados do paciente (mantém status "Em triagem")
+// Salva os dados do paciente e muda status para "Em triagem"
 async function salvarDados() {
     const nome = nomeInput.value.trim();
     const idade = idadeInput.value.trim();
@@ -117,7 +114,7 @@ async function salvarDados() {
     }
 }
 
-// Finaliza triagem e muda status para "Aguardando Recepção"
+// Finaliza a triagem e atualiza status
 async function finalizarTriagem(senha) {
     const maquina = localStorage.getItem("maquinaSelecionada") || "Classificação 01";
     try {
@@ -134,7 +131,7 @@ async function finalizarTriagem(senha) {
     }
 }
 
-// Exclui a senha selecionada
+// Exclui senha
 async function excluirSenha(senha) {
     if (!confirm(`Tem certeza que quer excluir a senha ${senha}?`)) return;
     try {
@@ -152,14 +149,14 @@ async function excluirSenha(senha) {
     }
 }
 
-// Inicializa polling automático
+// Inicia atualização automática
 function iniciarAtualizacaoAutomatica() {
     const maquina = localStorage.getItem("maquinaSelecionada") || "Classificação 01";
     carregarSenhas(maquina);
     setInterval(() => carregarSenhas(maquina), POLLING_INTERVAL);
 }
 
-// Modal de seleção de máquina
+// Abrir modal de seleção de máquina
 btnEngrenagem.addEventListener("click", () => {
     modalMaquina.classList.add("show");
     const maquinaSalva = localStorage.getItem("maquinaSelecionada");
@@ -170,8 +167,12 @@ btnEngrenagem.addEventListener("click", () => {
     }
 });
 
-cancelarMaquinaBtn.addEventListener("click", () => modalMaquina.classList.remove("show"));
+// Fechar modal de máquina
+cancelarMaquinaBtn.addEventListener("click", () => {
+    modalMaquina.classList.remove("show");
+});
 
+// Salvar máquina selecionada
 salvarMaquinaBtn.addEventListener("click", () => {
     const selecionado = document.querySelector("input[name='classificacao']:checked");
     if (!selecionado) {
@@ -185,17 +186,17 @@ salvarMaquinaBtn.addEventListener("click", () => {
     carregarSenhas(maquina);
 });
 
-// Inicialização após carregamento da página
+// Ao carregar a página
 document.addEventListener("DOMContentLoaded", () => {
     const maquina = localStorage.getItem("maquinaSelecionada") || "Classificação 01";
     spanMaquina.textContent = `(Máquina atual: ${maquina})`;
 
-    // Registra funções globais necessárias para onclick
+    // Tornar funções acessíveis no escopo global
     window.abrirModal = abrirModal;
     window.excluirSenha = excluirSenha;
     window.finalizarTriagem = finalizarTriagem;
 
-    // Eventos do modal
+    // Eventos de botões do modal do paciente
     cancelarBtn.addEventListener("click", cancelarModal);
     salvarBtn.addEventListener("click", salvarDados);
 

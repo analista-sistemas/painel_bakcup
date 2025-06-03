@@ -10,13 +10,15 @@
 <body>
     <h1>
         Painel de Classificação de Risco
+        <!-- Botão para configurar a máquina -->
         <button id="btnEngrenagem" title="Configurar Máquina" style="font-size: 1.3rem; margin-left: 15px; cursor: pointer">
       ⚙️
     </button>
+        <!-- Exibe a máquina atual -->
         <span id="spanMaquina" style="font-size: 1rem; margin-left: 10px; color: #555"></span>
     </h1>
 
-    <!-- Tabela de senhas -->
+    <!-- Tabela de senhas preenchida dinamicamente -->
     <table id="senhaTable">
         <thead>
             <tr>
@@ -27,7 +29,6 @@
             </tr>
         </thead>
         <tbody></tbody>
-        <!-- Tabela será populada dinamicamente pelo JS -->
     </table>
 
     <!-- Modal para preencher dados do paciente -->
@@ -73,13 +74,15 @@
             <form id="formMaquina">
                 <label><input type="radio" name="classificacao" value="Classificação 01" /> Classificação 01</label>
                 <label><input type="radio" name="classificacao" value="Classificação 02" /> Classificação 02</label>
-                <br />
-                <button type="button" id="salvarMaquinaBtn">Salvar</button>
-                <button type="button" id="cancelarMaquinaBtn">Cancelar</button>
+                <div style="margin-top: 15px;">
+                    <button type="button" id="salvarMaquinaBtn">Salvar</button>
+                    <button type="button" id="cancelarMaquinaBtn">Cancelar</button>
+                </div>
             </form>
         </div>
     </div>
 
+    <!-- Script principal -->
     <script src="script.js" defer></script>
 </body>
 
