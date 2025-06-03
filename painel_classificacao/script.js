@@ -1,3 +1,5 @@
+// --- script.js FINAL ATUALIZADO E COMENTADO ---
+
 // URL pública do Apps Script (já configurada)
 const WEB_APP_URL =
     "https://script.google.com/macros/s/AKfycbwVZTKjNARuWKLEADu4KcFUz0-xT9OJ88Q-8Y9lzQF-9B8Nowa2jcXHJM71Sg_cTkWbvQ/exec";
@@ -27,7 +29,7 @@ const salvarMaquinaBtn = document.getElementById("salvarMaquinaBtn");
 const cancelarMaquinaBtn = document.getElementById("cancelarMaquinaBtn");
 const spanMaquina = document.getElementById("spanMaquina");
 
-// Elemento de notificação
+// Elemento de notificação flutuante (mensagem verde após salvar)
 const notificador = document.createElement("div");
 notificador.id = "notificador";
 notificador.style.position = "fixed";
@@ -42,6 +44,7 @@ notificador.style.display = "none";
 notificador.style.zIndex = "9999";
 document.body.appendChild(notificador);
 
+// Exibe mensagem no topo
 function mostrarMensagem(texto) {
     notificador.textContent = texto;
     notificador.style.display = "block";
@@ -50,14 +53,14 @@ function mostrarMensagem(texto) {
     }, 3000);
 }
 
-// Função para renderizar tabela com base nas senhas
+// Renderiza a tabela com base nas senhas
 function render() {
     tbody.innerHTML = "";
 
     senhas.forEach(({ senha, data, status }) => {
         const tr = document.createElement("tr");
 
-        // Define botões dinamicamente com base no status da senha
+        // Define os botões de ação com base no status da senha
         let botoes = "";
         if (status === "Em triagem") {
             botoes += `<button class="btn-finalizar" onclick="finalizarTriagem('${senha}')">Finalizar Classificação</button>`;
@@ -77,7 +80,7 @@ function render() {
     });
 }
 
-// Função para buscar senhas do Apps Script
+// Busca a lista de senhas atualizada
 async function carregarSenhas(maquina) {
     try {
         const resp = await fetch(`${WEB_APP_URL}?action=listar&maquina=${encodeURIComponent(maquina)}`);
@@ -88,20 +91,20 @@ async function carregarSenhas(maquina) {
     }
 }
 
-// Abre o modal de preenchimento de dados do paciente
+// Abre o modal para chamar uma senha
 function abrirModal(senha) {
     senhaSelecionada = senha;
     limparFormulario();
     modal.classList.add("show");
 }
 
-// Fecha o modal do paciente
+// Fecha o modal
 function cancelarModal() {
     modal.classList.remove("show");
     limparFormulario();
 }
 
-// Limpa campos do formulário
+// Limpa os campos do formulário
 function limparFormulario() {
     nomeInput.value = "";
     idadeInput.value = "";
@@ -110,7 +113,7 @@ function limparFormulario() {
     observacaoInput.value = "";
 }
 
-// Salva dados e marca como "Em triagem"
+// Salva dados do paciente e define como "Em triagem"
 async function salvarDados() {
     const nome = nomeInput.value.trim();
     const idade = idadeInput.value.trim();
@@ -133,7 +136,8 @@ async function salvarDados() {
         const result = await resp.json();
         if (result.success) {
             mostrarMensagem("Dados salvos com sucesso!");
-            carregarSenhas(maquina);
+            // Aguarda 500ms antes de recarregar as senhas, para garantir que o status "Em triagem" esteja refletido
+            setTimeout(() => carregarSenhas(maquina), 500);
         } else {
             alert("Erro ao salvar dados: " + result.message);
         }
@@ -159,7 +163,7 @@ async function finalizarTriagem(senha) {
     }
 }
 
-// Exclui senha
+// Exclui uma senha
 async function excluirSenha(senha) {
     if (!confirm(`Tem certeza que deseja excluir a senha ${senha}?`)) return;
     try {
@@ -176,14 +180,14 @@ async function excluirSenha(senha) {
     }
 }
 
-// Atualização automática das senhas
+// Atualização automática das senhas a cada 5 segundos
 function iniciarAtualizacaoAutomatica() {
     const maquina = localStorage.getItem("maquinaSelecionada") || "Classificação 01";
     carregarSenhas(maquina);
     setInterval(() => carregarSenhas(maquina), POLLING_INTERVAL);
 }
 
-// Abrir modal da engrenagem
+// Abre o modal para seleção de máquina
 btnEngrenagem.addEventListener("click", () => {
     modalMaquina.classList.add("show");
     const maquinaSalva = localStorage.getItem("maquinaSelecionada");
@@ -194,12 +198,12 @@ btnEngrenagem.addEventListener("click", () => {
     }
 });
 
-// Fechar modal de seleção de máquina
+// Cancela modal de máquina
 cancelarMaquinaBtn.addEventListener("click", () => {
     modalMaquina.classList.remove("show");
 });
 
-// Salvar seleção de máquina
+// Salva a seleção da máquina
 salvarMaquinaBtn.addEventListener("click", () => {
     const selecionado = document.querySelector("input[name='classificacao']:checked");
     if (!selecionado) {
@@ -218,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const maquina = localStorage.getItem("maquinaSelecionada") || "Classificação 01";
     spanMaquina.textContent = `(Máquina atual: ${maquina})`;
 
-    // Expondo funções no escopo global
+    // Expondo funções globais
     window.abrirModal = abrirModal;
     window.excluirSenha = excluirSenha;
     window.finalizarTriagem = finalizarTriagem;
