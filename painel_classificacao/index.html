@@ -3,57 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Painel de Classificação de Risco</title>
+    <title>Painel de Classificação</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="container">
       <h1>Classificação de Risco</h1>
-      <div id="listaSenhas"></div>
-    </div>
-
-    <!-- Modal -->
-    <div id="modalPaciente" class="modal">
-      <div class="modal-content">
-        <form id="formPaciente">
+      <div id="painel-senhas">
+        <!-- As senhas e botões serão carregados aqui -->
+      </div>
+      <div id="modal" class="modal">
+        <div class="modal-content">
           <h2>Preencher Dados do Paciente</h2>
-          <label for="nome">Nome:</label>
-          <input type="text" id="nome" name="nome" required />
-
-          <label for="idade">Idade:</label>
-          <input type="number" id="idade" name="idade" required />
-
-          <label for="especialidade">Especialidade:</label>
-          <input type="text" id="especialidade" name="especialidade" required />
-
-          <label>Cor:</label>
-          <div class="color-options">
-            <label
-              ><input type="radio" name="cor" value="Branco" required />
-              Branco</label
-            >
-            <label><input type="radio" name="cor" value="Verde" /> Verde</label>
-            <label
-              ><input type="radio" name="cor" value="Amarelo" /> Amarelo</label
-            >
-            <label><input type="radio" name="cor" value="Azul" /> Azul</label>
-            <label
-              ><input type="radio" name="cor" value="Vermelho" />
-              Vermelho</label
-            >
-          </div>
-
-          <label for="observacao">Observação:</label>
-          <textarea id="observacao" name="observacao" rows="3"></textarea>
-
+          <label for="nome">Nome</label>
+          <input
+            type="text"
+            id="nome"
+            placeholder="Digite o nome do paciente"
+          />
+          <label for="idade">Idade</label>
+          <input type="number" id="idade" placeholder="Digite a idade" />
+          <label for="especialidade">Especialidade</label>
+          <input
+            type="text"
+            id="especialidade"
+            placeholder="Digite a especialidade"
+          />
+          <label for="cor">Cor da Classificação</label>
+          <select id="cor">
+            <option value="">Selecione...</option>
+            <option value="Branco">Branco</option>
+            <option value="Verde">Verde</option>
+            <option value="Amarelo">Amarelo</option>
+            <option value="Azul">Azul</option>
+            <option value="Vermelho">Vermelho</option>
+          </select>
+          <label for="observacao">Observação</label>
+          <textarea
+            id="observacao"
+            rows="3"
+            placeholder="Digite observações"
+          ></textarea>
           <div class="modal-buttons">
-            <button type="submit">Salvar</button>
-            <button type="button" id="btnCancelar">Cancelar</button>
+            <button id="salvar-dados">Salvar</button>
+            <button id="fechar-modal">Fechar</button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
-
     <script src="script.js"></script>
   </body>
 </html>

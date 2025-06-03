@@ -1,87 +1,80 @@
+const apiUrl =
+  "https://script.google.com/macros/s/AKfycbzUX_OyTervwoAr41BfOQZgynKFXRjSmV96UjsZVmqKNsqI58jiUdlxOmeFbgIKwshSjw/exec";
+
 document.addEventListener("DOMContentLoaded", () => {
-  const listaSenhas = document.getElementById("listaSenhas");
-  const modalPaciente = document.getElementById("modalPaciente");
-  const formPaciente = document.getElementById("formPaciente");
-  const btnCancelar = document.getElementById("btnCancelar");
-  let senhaSelecionada = "";
+  carregarSenhas();
 
-  // Dados iniciais simulados
-  const senhas = [
-    { id: "A011" },
-    { id: "A012" },
-    { id: "A013" },
-    { id: "A014" },
-  ];
-
-  function renderizarSenhas() {
-    listaSenhas.innerHTML = "";
-    senhas.forEach((senha, index) => {
-      const card = document.createElement("div");
-      card.className = "senhaCard";
-      card.innerHTML = `
-                <h2>${senha.id}</h2>
-                <button class="btnChamar" data-id="${index}">Chamar</button>
-                <button class="btnExcluir" data-id="${index}">Excluir</button>
-            `;
-      listaSenhas.appendChild(card);
-    });
-
-    document
-      .querySelectorAll(".btnChamar")
-      .forEach((btn) => btn.addEventListener("click", abrirModal));
-
-    document
-      .querySelectorAll(".btnExcluir")
-      .forEach((btn) => btn.addEventListener("click", excluirSenha));
-  }
-
-  function abrirModal(event) {
-    senhaSelecionada =
-      event.target.parentElement.querySelector("h2").textContent;
-    modalPaciente.classList.add("active");
-  }
-
-  btnCancelar.addEventListener("click", () => {
-    modalPaciente.classList.remove("active");
-  });
-
-  formPaciente.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const nome = document.getElementById("nome").value;
-    const idade = document.getElementById("idade").value;
-    const especialidade = document.getElementById("especialidade").value;
-    const observacao = document.getElementById("observacao").value;
-    const cor = document.querySelector('input[name="cor"]:checked').value;
-
-    const dados = {
-      senha: senhaSelecionada,
-      nome,
-      idade,
-      especialidade,
-      cor,
-      observacao,
-    };
-
-    fetch(
-      "https://script.google.com/macros/s/AKfycbzUX_OyTervwoAr41BfOQZgynKFXRjSmV96UjsZVmqKNsqI58jiUdlxOmeFbgIKwshSjw/exec",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados),
-      }
-    )
-      .then(() => {
-        alert("Dados salvos!");
-        modalPaciente.classList.remove("active");
-      })
-      .catch(() => alert("Erro ao salvar os dados."));
-  });
-
-  function excluirSenha(event) {
-    const index = event.target.dataset.id;
-    senhas.splice(index, 1);
-    renderizarSenhas();
-  }
-
-  renderizarSenhas();
+  document
+    .getElementById("fechar-modal")
+    .addEventListener("click", fecharModal);
+  document
+    .getElementById("salvar-dados")
+    .addEventListener("click", salvarDados);
 });
+
+function carregarSenhas() {
+  fetch(`${apiUrl}?action=listar`)
+    .then((response) => response.json())
+    .then((data) => {
+      const painel = document.getElementById("painel-senhas");
+      painel.innerHTML = ""; // Limpa senhas anteriores
+      data.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "senha-card";
+        div.innerHTML = `
+                    <p><strong>Senha:</strong> ${item.senha}</p>
+                    <button onclick="abrirModal('${item.senha}')">Chamar</button>
+                    <button onclick="excluirSenha('${item.senha}')">Excluir</button>
+                `;
+        painel.appendChild(div);
+      });
+    })
+    .catch((err) => console.error("Erro ao carregar senhas:", err));
+}
+
+function abrirModal(senha) {
+  document.getElementById("modal").style.display = "flex";
+  document.getElementById("modal").dataset.senha = senha;
+}
+
+function fecharModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+function salvarDados() {
+  const senha = document.getElementById("modal").dataset.senha;
+  const nome = document.getElementById("nome").value;
+  const idade = document.getElementById("idade").value;
+  const especialidade = document.getElementById("especialidade").value;
+  const cor = document.getElementById("cor").value;
+  const observacao = document.getElementById("observacao").value;
+
+  fetch(
+    `${apiUrl}?action=chamar&senha=${senha}&nome=${nome}&idade=${idade}&especialidade=${especialidade}&cor=${cor}&observacao=${observacao}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        alert("Dados salvos com sucesso!");
+        fecharModal();
+        carregarSenhas();
+      } else {
+        alert("Erro ao salvar dados: " + data.message);
+      }
+    })
+    .catch((err) => console.error("Erro ao salvar dados:", err));
+}
+
+function excluirSenha(senha) {
+  fetch(`${apiUrl}?action=excluir&senha=${senha}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        alert("Senha excluída com sucesso!");
+        carregarSenhas();
+      } else {
+        alert("Erro ao excluir senha: " + data.message);
+      }
+    })
+    .catch((err) => console.error("Erro ao excluir senha:", err));
+}
