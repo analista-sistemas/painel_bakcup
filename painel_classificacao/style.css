@@ -1,150 +1,113 @@
-/* style.css */
-
-/* Reset básico */
+/* Reset básico (opcional) */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
+/* Corpo da página */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-  margin: 20px;
-  padding: 0;
+  padding: 20px;
+  background: #f9f9f9;
 }
 
+/* Título */
 h1 {
-  color: #007bff;
-  text-align: center;
-  margin-bottom: 20px;
+  color: #333;
+  margin-bottom: 10px;
 }
 
-/* Tabela */
-#senhaTable {
+/* Tabela de senhas */
+table {
   width: 100%;
   border-collapse: collapse;
-  margin: auto;
-  max-width: 900px;
+  margin-top: 20px;
+}
+th,
+td {
+  padding: 12px;
+  border: 1px solid #ccc;
+  text-align: left;
 }
 
-#senhaTable th,
-#senhaTable td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-}
-
-#senhaTable th {
-  background-color: #007bff;
-  color: white;
-  font-weight: bold;
-}
-
-#senhaTable tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-/* Botões dentro da tabela */
+/* Botões */
 button {
-  background-color: #007bff;
+  padding: 6px 12px;
+  cursor: pointer;
+  margin-right: 5px;
+  background-color: #3490dc;
   border: none;
   color: white;
-  padding: 6px 12px;
-  margin: 0 3px;
   border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
 }
-
 button:hover {
-  background-color: #0056b3;
+  background-color: #2779bd;
+}
+button#cancelarBtn {
+  background-color: #6c757d;
+}
+button#cancelarBtn:hover {
+  background-color: #5a6268;
 }
 
-/* Modal */
-.hidden {
-  display: none;
-}
-
+/* Modal de preenchimento */
 #modal {
+  display: none; /* Escondido por padrão */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
+  background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
   justify-content: center;
   align-items: center;
-  z-index: 10;
 }
 
 #modal-content {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 320px;
 }
 
+/* Formulário */
 .form-group {
   margin-bottom: 15px;
 }
-
-label {
-  font-weight: bold;
+.form-group label {
   display: block;
   margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: #333;
 }
-
-input,
-select {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
-  padding: 8px 10px;
-  border-radius: 4px;
+  padding: 8px;
+  font-size: 0.9rem;
   border: 1px solid #ccc;
-  font-size: 14px;
+  border-radius: 4px;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.form-group textarea {
+  resize: vertical;
+  min-height: 50px;
 }
 
-/* Botões do modal */
-#salvarBtn,
-#cancelarBtn {
-  width: 48%;
-  margin-top: 10px;
+/* Animação ao exibir modal */
+#modal.show {
+  display: flex;
+  animation: fadeIn 0.3s ease-out;
 }
 
-#salvarBtn {
-  background-color: #28a745;
-}
-
-#salvarBtn:hover {
-  background-color: #218838;
-}
-
-#cancelarBtn {
-  background-color: #dc3545;
-}
-
-#cancelarBtn:hover {
-  background-color: #c82333;
-}
-
-/* Responsividade */
-@media (max-width: 600px) {
-  #senhaTable th,
-  #senhaTable td {
-    font-size: 12px;
-    padding: 6px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-
-  #modal-content {
-    padding: 15px 20px;
+  to {
+    opacity: 1;
   }
 }

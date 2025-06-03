@@ -3,11 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>Painel de Classificação de Risco</title>
+    <!-- Link para o CSS externo -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Título da página -->
     <h1>Painel de Classificação de Risco</h1>
 
+    <!-- Tabela para listar as senhas aguardando -->
     <table id="senhaTable">
       <thead>
         <tr>
@@ -18,11 +21,12 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Linhas vão aqui -->
+        <!-- As linhas da tabela são geradas dinamicamente pelo JavaScript -->
       </tbody>
     </table>
 
-    <div id="modal" class="hidden">
+    <!-- Modal para preencher informações do paciente -->
+    <div id="modal">
       <div id="modal-content">
         <h2>Preencher Dados do Paciente</h2>
         <form id="form">
@@ -57,6 +61,7 @@
       </div>
     </div>
 
+    <!-- Link para o JavaScript externo (defer garante que o HTML carregue antes do script) -->
     <script src="script.js" defer></script>
   </body>
 </html>
