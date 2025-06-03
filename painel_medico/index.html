@@ -8,35 +8,98 @@
   <body>
     <h1>
       Painel Médico
-      <button id="btnEngrenagem" title="Selecionar Consultório">⚙️</button>
-      <button id="btnFiltro" title="Filtrar Especialidades">🩺</button>
-      <span id="spanConsultorio"></span>
+      <button
+        id="btnEngrenagem"
+        title="Selecionar Consultório"
+        class="btn-primario"
+      >
+        ⚙️
+      </button>
+      <button
+        id="btnFiltroEspecialidade"
+        title="Filtrar Especialidade"
+        class="btn-primario"
+      >
+        🩺
+      </button>
+      <span
+        id="spanMaquina"
+        style="margin-left: 15px; font-size: 1rem; color: #555"
+      ></span>
     </h1>
 
-    <div id="filtroEspecialidades" class="filtro-container">
-      <label><input type="checkbox" id="selectAll" /> Selecionar Todas</label>
-      <label
-        ><input type="checkbox" class="especialidade" value="Pediatria" />
-        Pediatria</label
-      >
-      <label
-        ><input type="checkbox" class="especialidade" value="Ortopedia" />
-        Ortopedia</label
-      >
-      <label
-        ><input type="checkbox" class="especialidade" value="Cirurgia Geral" />
-        Cirurgia Geral</label
-      >
-      <label
-        ><input type="checkbox" class="especialidade" value="Clínica Médica" />
-        Clínica Médica</label
-      >
-      <label
-        ><input type="checkbox" class="especialidade" value="Ginecologia" />
-        Ginecologia</label
-      >
+    <!-- Filtro de Especialidades -->
+    <div id="filtroEspecialidades" class="modal filtro-modal">
+      <div id="modalFiltroContent">
+        <h2>Filtrar Especialidades</h2>
+        <form>
+          <label
+            ><input type="checkbox" id="selectAll" /> Selecionar Todas</label
+          >
+          <label
+            ><input type="checkbox" class="especialidade" value="Pediatria" />
+            Pediatria</label
+          >
+          <label
+            ><input type="checkbox" class="especialidade" value="Ortopedia" />
+            Ortopedia</label
+          >
+          <label
+            ><input
+              type="checkbox"
+              class="especialidade"
+              value="Cirurgia Geral"
+            />
+            Cirurgia Geral</label
+          >
+          <label
+            ><input
+              type="checkbox"
+              class="especialidade"
+              value="Clínica Médica"
+            />
+            Clínica Médica</label
+          >
+          <label
+            ><input type="checkbox" class="especialidade" value="Ginecologia" />
+            Ginecologia</label
+          >
+
+          <div class="botoes-modal">
+            <button type="button" id="fecharFiltroBtn" class="btn-perigo">
+              Fechar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
+    <!-- Modal de Consultório -->
+    <div id="modalMaquina" class="modal">
+      <div id="modalMaquinaContent">
+        <h2>Selecionar Consultório</h2>
+        <form id="formMaquina">
+          ${[...Array(12)].map((_, i) => `<label
+            ><input
+              type="radio"
+              name="consultorio"
+              value="Consultório ${i + 1}"
+            />
+            Consultório ${i + 1}</label
+          >`).join("")}
+          <div style="margin-top: 15px">
+            <button type="button" id="salvarMaquinaBtn" class="btn-primario">
+              Salvar
+            </button>
+            <button type="button" id="cancelarMaquinaBtn" class="btn-perigo">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tabela de pacientes -->
     <table id="senhaTable">
       <thead>
         <tr>
