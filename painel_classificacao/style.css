@@ -7,7 +7,7 @@
 }
 
 
-/* Estilo geral do corpo */
+/* Corpo da página */
 
 body {
     font-family: Arial, sans-serif;
@@ -16,7 +16,7 @@ body {
 }
 
 
-/* Título principal */
+/* Título */
 
 h1 {
     color: #333;
@@ -24,7 +24,7 @@ h1 {
 }
 
 
-/* Tabela de senhas */
+/* Tabela */
 
 table {
     width: 100%;
@@ -40,36 +40,53 @@ td {
 }
 
 
-/* Botões gerais */
+/* Botões padrão */
 
 button {
     padding: 6px 12px;
     cursor: pointer;
     margin-right: 5px;
-    background-color: #3490dc;
     border: none;
     color: white;
     border-radius: 4px;
     transition: background-color 0.2s;
 }
 
-button:hover {
+
+/* Botão: Chamar */
+
+.btn-primario {
+    background-color: #3490dc;
+}
+
+.btn-primario:hover {
     background-color: #2779bd;
 }
 
 
-/* Botão cancelar do modal do paciente */
+/* Botão: Excluir */
 
-button#cancelarBtn {
-    background-color: #6c757d;
+.btn-perigo {
+    background-color: #e3342f;
 }
 
-button#cancelarBtn:hover {
-    background-color: #5a6268;
+.btn-perigo:hover {
+    background-color: #cc1f1a;
 }
 
 
-/* Modal de dados do paciente */
+/* Botão: Finalizar Triagem */
+
+.btn-finalizar {
+    background-color: #38c172;
+}
+
+.btn-finalizar:hover {
+    background-color: #2f9e60;
+}
+
+
+/* Modal genérico */
 
 #modal,
 #modalMaquina {
@@ -84,6 +101,9 @@ button#cancelarBtn:hover {
     align-items: center;
 }
 
+
+/* Mostrar modal com animação */
+
 #modal.show,
 #modalMaquina.show {
     display: flex;
@@ -91,7 +111,7 @@ button#cancelarBtn:hover {
 }
 
 
-/* Conteúdo centralizado do modal do paciente */
+/* Conteúdo dos modais */
 
 #modal-content,
 #modalMaquinaContent {
@@ -126,18 +146,14 @@ button#cancelarBtn:hover {
 }
 
 
-/* Estilo dos botões no modal da máquina */
+/* Opções de máquina */
 
 #formMaquina label {
     display: flex;
-    /* Alinha input e texto lado a lado */
     align-items: center;
-    /* Alinha verticalmente */
-    margin-bottom: 5px;
-    /* Espaço pequeno entre as opções */
+    margin-bottom: 8px;
     font-size: 1rem;
     gap: 8px;
-    /* Espaço entre o botão e o texto */
 }
 
 #formMaquina button {
@@ -146,7 +162,7 @@ button#cancelarBtn:hover {
 }
 
 
-/* Animação para exibir modais */
+/* Animação fade */
 
 @keyframes fadeIn {
     from {
