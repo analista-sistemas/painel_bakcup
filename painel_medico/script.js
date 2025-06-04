@@ -79,6 +79,7 @@ function render() {
         especialidadesSelecionadas.includes(s.especialidade)
     )
     .forEach(({ senha, nome, idade, data, status, especialidade, cor }) => {
+      const corClasse = `cor-${(cor || "").trim().replace(/\s+/g, "")}`;
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
@@ -88,7 +89,7 @@ function render() {
         <td>${new Date(data).toLocaleString()}</td>
         <td>${status}</td>
         <td>${especialidade}</td>
-        <td><span class="cor-bolinha cor-${cor}"></span></td>
+        <td><span class="cor-bolinha ${corClasse}"></span></td>
         <td>
           <button class="btn-primario" onclick="chamarPaciente('${senha}')">Chamar</button>
           <button class="btn-finalizar" onclick="liberarPaciente('${senha}')">Liberar</button>
