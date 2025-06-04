@@ -5,40 +5,142 @@
     <title>Painel Médico</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-
   <body>
-    <h1 style="display: flex; align-items: center; gap: 5px">
+    <h1>
       Painel Médico
       <button
         id="btnEngrenagem"
         title="Selecionar Consultório"
-        style="
-          font-size: 1.3rem;
-          cursor: pointer;
-          background: none;
-          border: none;
-        "
+        class="icone-btn"
       >
         ⚙️
       </button>
       <button
-        id="btnFiltroEspecialidades"
-        title="Filtrar Especialidades"
-        style="
-          font-size: 1.3rem;
-          cursor: pointer;
-          background: none;
-          border: none;
-        "
+        id="btnFiltroEspecialidade"
+        title="Filtrar Especialidade"
+        class="icone-btn"
       >
         🩺
       </button>
       <span
-        id="spanConsultorio"
-        style="font-size: 1rem; color: #555; margin-left: 5px"
+        id="spanMaquina"
+        style="margin-left: 15px; font-size: 1rem; color: #555"
       ></span>
     </h1>
 
+    <!-- Filtro de Especialidades -->
+    <div id="filtroEspecialidades" class="modal filtro-modal">
+      <div id="modalFiltroContent">
+        <h2>Filtrar Especialidades</h2>
+        <form>
+          <label
+            ><input type="checkbox" id="selectAll" /> Selecionar Todas</label
+          >
+          <label
+            ><input type="checkbox" class="especialidade" value="Pediatria" />
+            Pediatria</label
+          >
+          <label
+            ><input type="checkbox" class="especialidade" value="Ortopedia" />
+            Ortopedia</label
+          >
+          <label
+            ><input
+              type="checkbox"
+              class="especialidade"
+              value="Cirurgia Geral"
+            />
+            Cirurgia Geral</label
+          >
+          <label
+            ><input
+              type="checkbox"
+              class="especialidade"
+              value="Clínica Médica"
+            />
+            Clínica Médica</label
+          >
+          <label
+            ><input type="checkbox" class="especialidade" value="Ginecologia" />
+            Ginecologia</label
+          >
+
+          <div class="botoes-modal">
+            <button type="button" id="fecharFiltroBtn" class="btn-perigo">
+              Fechar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal de Consultório -->
+    <div id="modalMaquina" class="modal">
+      <div id="modalMaquinaContent">
+        <h2>Selecionar Consultório</h2>
+        <form id="formMaquina">
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 1" />
+            Consultório 1</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 2" />
+            Consultório 2</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 3" />
+            Consultório 3</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 4" />
+            Consultório 4</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 5" />
+            Consultório 5</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 6" />
+            Consultório 6</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 7" />
+            Consultório 7</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 8" />
+            Consultório 8</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 9" />
+            Consultório 9</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 10" />
+            Consultório 10</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 11" />
+            Consultório 11</label
+          >
+          <label
+            ><input type="radio" name="consultorio" value="Consultório 12" />
+            Consultório 12</label
+          >
+
+          <div style="margin-top: 15px">
+            <button type="button" id="salvarMaquinaBtn" class="btn-primario">
+              Salvar
+            </button>
+            <button type="button" id="cancelarMaquinaBtn" class="btn-perigo">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tabela de pacientes -->
     <table id="senhaTable">
       <thead>
         <tr>
@@ -54,94 +156,6 @@
       </thead>
       <tbody></tbody>
     </table>
-
-    <!-- Modal Especialidades -->
-    <div id="modalEspecialidades" class="modal">
-      <div class="modal-content">
-        <h2>Filtrar Especialidades</h2>
-        <div class="especialidades-opcoes">
-          <label
-            ><input type="checkbox" id="selectAllEspecialidades" /> Selecionar
-            Todas</label
-          >
-          <label
-            ><input
-              type="checkbox"
-              class="chk-especialidade"
-              value="Pediatria"
-            />
-            Pediatria</label
-          >
-          <label
-            ><input
-              type="checkbox"
-              class="chk-especialidade"
-              value="Ortopedia"
-            />
-            Ortopedia</label
-          >
-          <label
-            ><input
-              type="checkbox"
-              class="chk-especialidade"
-              value="Cirurgia Geral"
-            />
-            Cirurgia Geral</label
-          >
-          <label
-            ><input
-              type="checkbox"
-              class="chk-especialidade"
-              value="Clínica Médica"
-            />
-            Clínica Médica</label
-          >
-          <label
-            ><input
-              type="checkbox"
-              class="chk-especialidade"
-              value="Ginecologia"
-            />
-            Ginecologia</label
-          >
-        </div>
-        <div style="margin-top: 15px">
-          <button
-            type="button"
-            id="fecharModalEspecialidades"
-            class="btn-primario"
-          >
-            Fechar
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal Consultório -->
-    <div id="modalConsultorio" class="modal">
-      <div class="modal-content">
-        <h2>Selecionar Consultório</h2>
-        <form id="formConsultorio">
-          <div id="radiosConsultorios"></div>
-          <div style="margin-top: 15px">
-            <button
-              type="button"
-              id="salvarConsultorioBtn"
-              class="btn-primario"
-            >
-              Salvar
-            </button>
-            <button
-              type="button"
-              id="cancelarConsultorioBtn"
-              class="btn-perigo"
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
 
     <script src="script.js" defer></script>
   </body>
