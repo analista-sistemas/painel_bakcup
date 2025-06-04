@@ -26,8 +26,9 @@ td {
   padding: 12px;
   border: 1px solid #ccc;
   text-align: left;
-  font-size: 0.95rem;
 }
+
+/* Botões padrão */
 
 button {
   padding: 6px 12px;
@@ -39,10 +40,12 @@ button {
   transition: background-color 0.2s;
 }
 
-/* Botões padrão */
+/* Botões específicos */
+
 .btn-primario {
   background-color: #3490dc;
 }
+
 .btn-primario:hover {
   background-color: #2779bd;
 }
@@ -50,6 +53,7 @@ button {
 .btn-perigo {
   background-color: #e3342f;
 }
+
 .btn-perigo:hover {
   background-color: #cc1f1a;
 }
@@ -57,6 +61,7 @@ button {
 .btn-finalizar {
   background-color: #38c172;
 }
+
 .btn-finalizar:hover {
   background-color: #2f9e60;
 }
@@ -65,24 +70,13 @@ button {
   background-color: #f1c40f;
   color: #000;
 }
+
 .btn-aviso:hover {
   background-color: #d4ac0d;
 }
 
-/* Botões ícones (⚙️, 🩺) sem fundo */
-.icone-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.3rem;
-  margin-left: 10px;
-  cursor: pointer;
-  color: #333;
-}
-.icone-btn:hover {
-  transform: scale(1.1);
-}
+/* Estilo para modais */
 
-/* Modal geral */
 .modal {
   display: none;
   position: fixed;
@@ -101,9 +95,7 @@ button {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Conteúdo dos modais */
-#modalMaquinaContent,
-#modalFiltroContent {
+.modal-content {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -111,9 +103,18 @@ button {
   z-index: 1001;
 }
 
-/* Labels */
-#formMaquina label,
-#modalFiltroContent label {
+/* Agrupamento dos checkboxes */
+
+.especialidades-opcoes label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Radios de consultórios no modal */
+
+#formConsultorio label {
   display: flex;
   align-items: center;
   margin-bottom: 8px;
@@ -121,35 +122,32 @@ button {
   gap: 8px;
 }
 
-/* Botões dos modais */
-.botoes-modal {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
+/* Cor da bolinha de classificação */
 
-/* Bolinhas de cor */
-.cor-bolinha {
+.cor-indicador {
+  display: inline-block;
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  display: inline-block;
 }
 
-.cor-Vermelho {
-  background: red;
-}
-.cor-Amarelo {
-  background: gold;
-}
-.cor-Verde {
-  background: green;
-}
-.cor-Azul {
-  background: blue;
+/* Notificador de mensagens */
+
+#notificador {
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #38c172;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: none;
+  z-index: 9999;
 }
 
-/* Animação */
+/* Animação modal */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
