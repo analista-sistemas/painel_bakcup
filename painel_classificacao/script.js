@@ -1,7 +1,7 @@
 // --- script.js FINAL - AJUSTADO E COMENTADO ---
 
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbw4JBk7XlMrNVskdOE96nbFpsjT4aQp2eQrtpBlGvE7rxFwSyRzgHnJMXFwGsaS3IgttQ/exec";
+  "https://script.google.com/macros/s/AKfycbw6Bx8kj2yar9Fl7flIRBFgOtmDvMP5mWLiCUzQRam5-ROV9kT1CLmfoeIil_LdK8kEhQ/exec";
 
 let senhas = [];
 let senhaSelecionada = "";
