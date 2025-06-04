@@ -7,9 +7,8 @@
   </head>
 
   <body>
-    <h1 style="display: flex; align-items: center; gap: 10px">
+    <h1 style="display: flex; align-items: center; gap: 5px">
       Painel Médico
-      <!-- Botão engrenagem para selecionar consultório -->
       <button
         id="btnEngrenagem"
         title="Selecionar Consultório"
@@ -22,7 +21,6 @@
       >
         ⚙️
       </button>
-      <!-- Botão filtro para especialidades -->
       <button
         id="btnFiltroEspecialidades"
         title="Filtrar Especialidades"
@@ -35,7 +33,6 @@
       >
         🩺
       </button>
-      <!-- Consultório selecionado -->
       <span
         id="spanConsultorio"
         style="font-size: 1rem; color: #555; margin-left: 5px"
@@ -47,6 +44,7 @@
         <tr>
           <th>Senha</th>
           <th>Nome</th>
+          <th>Idade</th>
           <th>Data/Hora</th>
           <th>Status</th>
           <th>Especialidade</th>
@@ -124,9 +122,7 @@
       <div class="modal-content">
         <h2>Selecionar Consultório</h2>
         <form id="formConsultorio">
-          <div id="radiosConsultorios">
-            <!-- Radios são inseridos dinamicamente pelo script -->
-          </div>
+          <div id="radiosConsultorios"></div>
           <div style="margin-top: 15px">
             <button
               type="button"
