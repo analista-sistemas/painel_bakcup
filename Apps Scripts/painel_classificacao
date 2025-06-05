@@ -1,0 +1,170 @@
+// ID da planilha do Google Sheets
+const SPREADSHEET_ID = "1W4AsM03Y_ly4ZwUKuDkI3M_8broL-RLyltvj-3Aodls";
+
+// Índices das colunas na aba "Pacientes"
+const IDX_SENHA = 0;
+const IDX_DATAHORA = 1;
+const IDX_NOME = 2;
+const IDX_IDADE = 3;
+const IDX_ESPECIALIDADE = 4;
+const IDX_STATUS = 5;
+const IDX_HORA_ATUALIZACAO = 6;
+const IDX_MAQUINA = 7;
+const IDX_TEMPO_ESPERA = 8;
+const IDX_COR = 9;
+const IDX_OBSERVACAO = 10;
+
+// Função principal que responde a chamadas HTTP GET
+function doGet(e) {
+    const action = e.parameter.action;
+    const maquina = e.parameter.maquina || "";
+
+    if (action === "listar") {
+        return listarSenhas(maquina);
+    } else if (action === "chamar") {
+        const senha = e.parameter.senha;
+        const nome = e.parameter.nome || "";
+        const idade = e.parameter.idade || "";
+        const especialidade = e.parameter.especialidade || "";
+        const cor = e.parameter.cor || "";
+        const observacao = e.parameter.observacao || "";
+
+        return chamarSenha(
+            senha,
+            maquina,
+            nome,
+            idade,
+            especialidade,
+            cor,
+            observacao
+        );
+    } else if (action === "excluir") {
+        const senha = e.parameter.senha;
+        return excluirSenha(senha);
+
+    } else if (action === "finalizarTriagem") {
+        const senha = e.parameter.senha;
+        return finalizarTriagem(senha);
+    }
+
+    // Ação inválida
+    return ContentService.createTextOutput(
+        JSON.stringify({ error: "Ação inválida" })
+    ).setMimeType(ContentService.MimeType.JSON);
+}
+
+// Lista as senhas que ainda não foram chamadas
+function listarSenhas(maquina) {
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("Pacientes");
+    const data = sheet.getDataRange().getValues();
+    const resultado = [];
+
+    for (let i = 1; i < data.length; i++) {
+        const row = data[i];
+
+        if (
+            row[IDX_STATUS] === "Aguardando classificação" &&
+            (!maquina || row[IDX_MAQUINA] === "")
+        ) {
+            resultado.push({
+                senha: row[IDX_SENHA],
+                data: row[IDX_DATAHORA],
+                status: row[IDX_STATUS],
+                tempoEspera: row[IDX_TEMPO_ESPERA] || "",
+                observacao: row[IDX_OBSERVACAO] || "",
+            });
+        }
+    }
+
+    return ContentService.createTextOutput(JSON.stringify(resultado))
+        .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Atualiza os dados do paciente e marca como "Em triagem"
+function chamarSenha(senha, maquina, nome, idade, especialidade, cor, observacao) {
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("Pacientes");
+    const linhas = sheet.getDataRange().getValues();
+
+    for (let i = 1; i < linhas.length; i++) {
+        if (linhas[i][IDX_SENHA] === senha) {
+            const rowIndex = i + 1;
+
+            sheet.getRange(rowIndex, IDX_STATUS + 1).setValue("Em triagem");
+            sheet.getRange(rowIndex, IDX_HORA_ATUALIZACAO + 1).setValue(new Date());
+            sheet.getRange(rowIndex, IDX_MAQUINA + 1).setValue(maquina);
+            sheet.getRange(rowIndex, IDX_NOME + 1).setValue(nome);
+            sheet.getRange(rowIndex, IDX_IDADE + 1).setValue(idade);
+            sheet.getRange(rowIndex, IDX_ESPECIALIDADE + 1).setValue(especialidade);
+            sheet.getRange(rowIndex, IDX_COR + 1).setValue(cor);
+            sheet.getRange(rowIndex, IDX_OBSERVACAO + 1).setValue(observacao);
+
+            return ContentService.createTextOutput(
+                JSON.stringify({ success: true })
+            ).setMimeType(ContentService.MimeType.JSON);
+        }
+    }
+
+    return ContentService.createTextOutput(
+        JSON.stringify({ success: false, message: "Senha não encontrada" })
+    ).setMimeType(ContentService.MimeType.JSON);
+}
+
+// Finaliza a triagem (muda o status para "Aguardando Recepção")
+function finalizarTriagem(senha) {
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("Pacientes");
+    const linhas = sheet.getDataRange().getValues();
+
+    for (let i = 1; i < linhas.length; i++) {
+        if (linhas[i][IDX_SENHA] === senha) {
+            const rowIndex = i + 1;
+
+            sheet.getRange(rowIndex, IDX_STATUS + 1).setValue("Aguardando Recepção");
+            sheet.getRange(rowIndex, IDX_HORA_ATUALIZACAO + 1).setValue(new Date());
+
+            return ContentService.createTextOutput(
+                JSON.stringify({ success: true, message: "Triagem finalizada com sucesso." })
+            ).setMimeType(ContentService.MimeType.JSON);
+        }
+    }
+
+    return ContentService.createTextOutput(
+        JSON.stringify({ success: false, message: "Senha não encontrada." })
+    ).setMimeType(ContentService.MimeType.JSON);
+}
+
+// Exclui senha da aba Pacientes e move para a aba Histórico
+function excluirSenha(senha) {
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("Pacientes");
+    const sheetHist = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("Histórico");
+    const linhas = sheet.getDataRange().getValues();
+
+    for (let i = 1; i < linhas.length; i++) {
+        if (linhas[i][IDX_SENHA] === senha) {
+            const rowIndex = i + 1;
+            const row = linhas[i];
+
+            const novaLinha = [
+                row[IDX_SENHA],
+                row[IDX_DATAHORA],
+                row[IDX_NOME],
+                row[IDX_IDADE],
+                row[IDX_ESPECIALIDADE],
+                "Excluído",
+                row[IDX_COR],
+                row[IDX_MAQUINA],
+                new Date().toLocaleString(),
+            ];
+
+            sheetHist.appendRow(novaLinha);
+            sheet.deleteRow(rowIndex);
+
+            return ContentService.createTextOutput(
+                JSON.stringify({ success: true })
+            ).setMimeType(ContentService.MimeType.JSON);
+        }
+    }
+
+    return ContentService.createTextOutput(
+        JSON.stringify({ success: false, message: "Senha não encontrada" })
+    ).setMimeType(ContentService.MimeType.JSON);
+}
