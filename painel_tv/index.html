@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel de Chamadas - TV</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Modal de Última Chamada -->
+    <div id="modalChamada" class="modal">
+      <div class="modal-content piscar">
+        <h1 id="modal-senha">A0012</h1>
+        <h2 id="modal-nome">MARTA SOUZA</h2>
+        <p id="modal-maquina">CONSULTÓRIO 05</p>
+      </div>
+    </div>
+
+    <!-- Área principal -->
+    <main>
+      <section id="ultimaChamada">
+        <h1 id="ultimaSenha">----</h1>
+        <h2 id="ultimaNome">Aguardando chamada...</h2>
+      </section>
+
+      <section id="historicoChamadas">
+        <div class="coluna">
+          <h3>CLASSIFICAÇÃO</h3>
+          <ul id="historicoClassificacao"></ul>
+        </div>
+        <div class="coluna">
+          <h3>RECEPÇÃO</h3>
+          <ul id="historicoRecepcao"></ul>
+        </div>
+        <div class="coluna">
+          <h3>MÉDICO</h3>
+          <ul id="historicoMedico"></ul>
+        </div>
+      </section>
+    </main>
+
+    <audio id="somChamada" src="som.mp3" preload="auto"></audio>
+    <script src="script.js" defer></script>
+  </body>
+</html>
